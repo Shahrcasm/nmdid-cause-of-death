@@ -1,0 +1,4 @@
+level1_class,n,age_median,age_q25,age_q75,age_median_iqr,male_n,male_pct
+natural_cardiac,373,59.0,51.0,68.0,59 (51-68),259,69.4
+drug_alcohol,500,43.0,34.0,52.0,43 (34-52),324,64.8
+injury,507,42.0,29.0,56.0,42 (29-56),392,77.3

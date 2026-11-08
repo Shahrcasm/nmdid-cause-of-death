@@ -1,0 +1,29 @@
+primary_cause_of_death,accident,homicide,natural,suicide,unclear,All
+"Asphyxia (suffocation, strangulation)",2,0,0,2,0,4
+Asthma,0,0,1,0,0,1
+"Blood disorders (anemia, Hyperviscosity Syndrome, leukopenia, Myelodysplastic Syndrome, myelofibrosis, pancytopenia)",0,0,1,0,0,1
+Cardiac arrhythmia,11,2,198,0,1,212
+Chronic obstructive pulmonary disease (COPD),0,0,1,0,0,1
+Diabetes,0,0,1,0,0,1
+"Emboli (throbus, phlebitus)",0,0,2,0,0,2
+Ethanol (alcohol) intoxication,195,0,2,0,2,199
+"Ethanolism (chronic, alcoholism, alcoholic liver)",1,0,3,0,0,4
+Exposure,1,0,0,0,0,1
+Gunshot wound of,0,30,2,92,2,126
+Hanging,0,0,0,6,0,6
+"Head and neck injuries (cervical, cranio-, cerebral)",101,16,0,3,5,125
+Hypertension (hypertensive cardiovascular disease),23,1,175,0,1,200
+Missing,0,0,1,0,0,1
+"Multiple injuries (fractures, lacerations to internal organs)",113,4,0,3,5,125
+Natural-specify,1,0,3,0,0,4
+Obesity,1,0,1,0,0,2
+Pneumonia (bronchitis),0,0,1,0,0,1
+"Respiratory Distress Syndrome (RDS, ARDS, IRDS, idiopathic pulmonary fibrosis, alveolar damage, insufficiency, Hanta viral)",0,0,1,0,0,1
+Sepsis,0,0,1,0,0,1
+Skeletal/mummified remains,0,0,0,0,1,1
+"Stab wound (slash, penetrating cut)",1,107,0,11,6,125
+"Substance intoxication (drug, poison, alcohol, etc.)",251,0,4,42,4,301
+Thermal injuries (burns),1,0,0,0,0,1
+Undetermined-specify,0,0,0,0,1,1
+homicidal violence,0,0,0,0,3,3
+All,702,160,398,159,31,1450
