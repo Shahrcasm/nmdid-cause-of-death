@@ -1,5 +1,16 @@
+# Python environment and caches
 .venv/
-data/
-outputs/
 __pycache__/
+*.pyc
 .ipynb_checkpoints/
+
+# NMDID data: never commit (NMDID data-use terms)
+data/
+*.csv
+*.parquet
+*.zip
+
+# Summary results ARE allowed (results/tables, results/figures).
+# Summary tables must contain aggregates only, never person-level rows.
+!results/
+!results/**

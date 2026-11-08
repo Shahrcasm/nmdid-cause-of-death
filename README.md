@@ -1,60 +1,47 @@
-# NMDID cause-of-death: metadata baseline
+# Lifestyle and cause of death in medicolegal deaths (NMDID metadata)
 
-Capstone CSE 499A. Leakage-audited, metadata-only study of cause of death using
-the New Mexico Decedent Image Database (NMDID).
+CSE 499A Capstone, North South University.
 
-This is the metadata arm of a planned multimodal study (PMCT image embeddings +
-metadata). The PMCT images are currently unavailable, so we start with metadata only.
+Does knowing how a person lived (drinking, smoking, drug use, illnesses, marital
+status, body size) help estimate how they died? For which kinds of death does it
+help, and for which doesn't it? We use metadata from the New Mexico Decedent Image
+Database (NMDID). CT imaging may be added in a later project.
+
+## Research questions
+- **RQ1:** How much does lifestyle (and medical history) add beyond age and sex?
+- **RQ2:** Which lifestyle factors matter, and do they differ by sex and age?
+- **RQ3:** Is the signal real lifestyle information or a recording artifact
+  (which fields happen to be blank)?
+
+Three levels: (1) natural cardiac vs drug/alcohol vs injury; (2) within injury:
+suicide vs homicide vs accident; (3) negative control: homicide gunshot vs stab.
 
 ## Data (not in this repo)
-The data are NOT included, and must never be committed or uploaded.
-Get the 3 NMDID carts (2960, 2966, 2975) through your own NMDID access, and follow
-the NMDID data-use terms. Do not upload data to Drive or Colab until the terms are checked.
-
-Place them like this:
+NMDID data are shared under NMDID data-use terms and must never be committed or
+uploaded. Get the 3 carts through your own NMDID access and place them as:
 
 ```
-data/raw/NMDID-cart-2960-meta/   (8 CSV files each)
-data/raw/NMDID-cart-2966-meta/
-data/raw/NMDID-cart-2975-meta/
+data/raw/cart2960/   (8 CSV files)
+data/raw/cart2966/
+data/raw/cart2975/
 ```
 
-## How to run
-1. Create a virtual environment with Python 3.11:
-   `py -3.11 -m venv .venv`
-2. Activate it: `.\.venv\Scripts\Activate.ps1`
-3. Install packages: `pip install -r requirements.txt`
-4. Register the kernel:
-   `python -m ipykernel install --user --name nmdid --display-name "Python (nmdid)"`
-5. Open `notebooks/01_schema_audit.ipynb` with the "Python (nmdid)" kernel.
+## Setup (Windows, Python 3.11)
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
 
-Before committing a notebook, clear all outputs (they can contain data rows).
-
-## Project layout
-- `notebooks/`: analysis notebooks
-- `src/`: reusable code (empty for now)
+## Layout
+- `src/`: pipeline scripts (`config.py`, `01_build_dataset.py`, ...), run in order
 - `data/raw/`: raw carts (git-ignored, never edit)
 - `data/processed/`: generated tables (git-ignored)
-- `outputs/`: figures and tables (git-ignored)
+- `results/tables/`, `results/figures/`: aggregate summary outputs only
 
 ## Status
+- Phase 0 (repository cleanup for the new direction): done
+- Phase 1 (data pipeline and first Level-1 results): next
 
-### Done (Steps 0-2)
-- **Setup:** Python 3.11 venv, requirements, git.
-- **Schema audit:** all 3 carts loaded (8 tables each); sizes, missing values and value lists checked.
-- **De-duplication:** 1,500 rows are 1,457 unique people. 43 people appear in two carts with identical data; one row per `id` is kept.
-- **Master table:** one row per person, 63 columns. Long tables were turned into features that keep 3 states: present, recorded none, not recorded.
-- **Exclusions (flagged, not deleted):** 2 people (blank label; unknown sex with missing age).
-
-### Key findings so far
-- Carts are cause-selected and capped, so class balance is artificial. Predicted probabilities are not real-world risk.
-- `manner_of_death` leaks the label and is excluded from modelling.
-- Documentation depth differs by cart (for example, diagnosis records: 26% in the injury cart vs 58% in the cardiac cart). "Has record" flags are shortcuts and will be tested with and without.
-- Several columns are almost empty (for example `bone_density`, `years_in_us`).
-- Single source (one medical examiner system), so generalisation is limited.
-
-### Next
-3. Label map and leakage table (frozen before modelling)
-4. EDA and association statistics (FDR-corrected)
-5. Leakage-audited baselines (grouped CV; LR, LightGBM, RF)
-6. TabPFN, conformal prediction, calibration (Colab, after data-terms check)
+The previous direction (multimodal benchmark) is preserved in the git tag
+`old-direction-backup`.
