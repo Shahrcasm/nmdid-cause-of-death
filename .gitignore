@@ -14,3 +14,6 @@ data/
 # Summary tables must contain aggregates only, never person-level rows.
 !results/
 !results/**
+
+# Editor settings
+.vscode/
