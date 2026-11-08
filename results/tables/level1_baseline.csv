@@ -1,0 +1,9 @@
+model,feature_set,n_features,macro_auc,auc_ci_low,auc_ci_high,macro_f1,f1_ci_low,f1_ci_high
+HistGB,M0_age_sex,2,0.676,0.657,0.697,0.493,0.466,0.518
+HistGB,M_missing_flags_only,19,0.716,0.696,0.736,0.527,0.501,0.552
+HistGB,M1_plus_lifestyle,60,0.728,0.709,0.75,0.536,0.51,0.564
+HistGB,M2_plus_med_history,87,0.755,0.736,0.775,0.562,0.536,0.588
+LogReg,M0_age_sex,2,0.685,0.666,0.703,0.475,0.449,0.502
+LogReg,M_missing_flags_only,19,0.734,0.714,0.752,0.541,0.514,0.567
+LogReg,M1_plus_lifestyle,60,0.734,0.715,0.753,0.553,0.526,0.577
+LogReg,M2_plus_med_history,87,0.749,0.73,0.768,0.575,0.548,0.601
