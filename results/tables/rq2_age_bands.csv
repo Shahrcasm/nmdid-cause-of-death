@@ -1,0 +1,10 @@
+age_band,n,feature_set,macro_auc
+18-39,466,M0_base,0.6
+18-39,466,M1_lifestyle,0.677
+18-39,466,M2_med_history,0.681
+40-59,594,M0_base,0.555
+40-59,594,M1_lifestyle,0.674
+40-59,594,M2_med_history,0.706
+60+,320,M0_base,0.558
+60+,320,M1_lifestyle,0.612
+60+,320,M2_med_history,0.629
