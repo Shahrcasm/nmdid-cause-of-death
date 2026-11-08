@@ -1,0 +1,9 @@
+forbidden_column,n_categories,cramers_v_with_level1
+source_cart,3,0.972
+zip_code,71,0.287
+time_delay_after_death,84,0.28
+death_county,36,0.254
+identification_method_code,9,0.205
+decomposition_score,5,0.149
+settings,5,0.128
+death_year,9,0.113

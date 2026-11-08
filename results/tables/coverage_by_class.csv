@@ -1,0 +1,11 @@
+field_block,overall_pct,natural_cardiac_pct,drug_alcohol_pct,injury_pct
+drinking,41.3,37.0,52.6,33.3
+tobacco,26.3,34.9,28.6,17.8
+drug_use,21.8,16.6,35.4,12.2
+diagnosis,41.4,59.8,43.2,26.2
+medications,34.6,50.1,45.4,12.6
+marital,28.5,32.2,26.6,27.6
+nok_interview,16.9,20.6,16.4,14.6
+cadaver_bmi_raw,91.4,90.9,93.0,90.3
+cadaver_bmi_clean,83.4,74.8,88.4,84.8
+living_bmi,17.2,20.9,16.4,15.2
