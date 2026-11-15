@@ -265,13 +265,22 @@ def build_marital_and_bmi(cohort):
     )
     features["marital_missing"] = (~marital_known).astype(int)
 
+    # Main-analysis cadaver BMI: only the implausible-value filter is applied.
+    # Blanking by decomposition_score would copy a forbidden post-mortem variable
+    # into the _missing flag (Cramer's V 0.74 with decomposition; cardiac deaths
+    # are decomposed about three times as often as the other classes), so that
+    # version is stored separately and used only as a sensitivity analysis.
     cad_bmi = compute_bmi(cohort["cadaver_weight"], cohort["cadaver_length"])
+    features["cadaver_bmi"] = cad_bmi.values
+    features["cadaver_bmi_missing"] = features["cadaver_bmi"].isna().astype(int)
+
     bad_decomp = cohort["decomposition_score"].isin(
         ["moderate decomposition", "advanced decomposition"]
     )
-    cad_bmi = cad_bmi.where(~bad_decomp)
-    features["cadaver_bmi"] = cad_bmi.values
-    features["cadaver_bmi_missing"] = features["cadaver_bmi"].isna().astype(int)
+    features["cadaver_bmi_decomp_blanked"] = cad_bmi.where(~bad_decomp).values
+    features["cadaver_bmi_decomp_blanked_missing"] = (
+        features["cadaver_bmi_decomp_blanked"].isna().astype(int)
+    )
 
     liv_bmi = compute_bmi(cohort["living_weight"], cohort["living_height"])
     features["living_bmi"] = liv_bmi.values
@@ -352,7 +361,9 @@ def build_rq3_extras(tables, cohort):
     med_counts = real_meds.groupby(config.KEY).size()
     features["n_medications"] = features[config.KEY].map(med_counts).fillna(0).astype(int)
     features["any_medication"] = (features["n_medications"] > 0).astype(int)
-    features["med_missing"] = (features["any_medication"] == 0).astype(int)
+    # NMDID has no 'no medications' code: an empty medications table cannot
+    # separate 'took none' from 'not recorded'. The name says exactly that.
+    features["med_none_recorded"] = (features["any_medication"] == 0).astype(int)
 
     # Family-interview (NOK) marker.
     env = tables["env-history"]
@@ -394,6 +405,9 @@ if __name__ == "__main__":
 
     print("Saved cohort.csv:", cohort.shape)
     print("Saved features.csv:", features.shape)
+    n_model = features.shape[1] - 1 - len(config.RQ3_ONLY) - len(config.SENSITIVITY_ONLY)
+    print("Model features (M2):", n_model, "| RQ3-only:", len(config.RQ3_ONLY),
+          "| sensitivity-only:", len(config.SENSITIVITY_ONLY))
 
     # Check RQ3 markers on the Level-1 cohort (n=1380).
     l1_ids = cohort[cohort["level1"].isin(["natural_cardiac", "drug_alcohol", "injury"])][config.KEY]
