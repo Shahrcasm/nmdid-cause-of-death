@@ -1,10 +1,10 @@
-age_band,n,feature_set,macro_auc
-18-39,466,M0_base,0.6
-18-39,466,M1_lifestyle,0.677
-18-39,466,M2_med_history,0.681
-40-59,594,M0_base,0.555
-40-59,594,M1_lifestyle,0.674
-40-59,594,M2_med_history,0.706
-60+,320,M0_base,0.558
-60+,320,M1_lifestyle,0.612
-60+,320,M2_med_history,0.629
+age_band,feature_set,n,class_counts,macro_auc,macro_auc_ci_low,macro_auc_ci_high,auc_gain_vs_ref,gain_ci_low,gain_ci_high
+18-39,M0_base,466,"{'injury': 237, 'drug_alcohol': 207, 'natural_cardiac': 22}",0.598,0.541,0.656,0.0,0.0,0.0
+18-39,M1_lifestyle,466,"{'injury': 237, 'drug_alcohol': 207, 'natural_cardiac': 22}",0.712,0.661,0.759,0.114,0.057,0.17
+18-39,M2_med_history,466,"{'injury': 237, 'drug_alcohol': 207, 'natural_cardiac': 22}",0.714,0.662,0.764,0.116,0.054,0.173
+40-59,M0_base,594,"{'drug_alcohol': 250, 'injury': 177, 'natural_cardiac': 167}",0.548,0.514,0.584,0.0,0.0,0.0
+40-59,M1_lifestyle,594,"{'drug_alcohol': 250, 'injury': 177, 'natural_cardiac': 167}",0.657,0.625,0.69,0.11,0.071,0.147
+40-59,M2_med_history,594,"{'drug_alcohol': 250, 'injury': 177, 'natural_cardiac': 167}",0.705,0.673,0.738,0.157,0.116,0.199
+60+,M0_base,320,"{'natural_cardiac': 184, 'injury': 93, 'drug_alcohol': 43}",0.556,0.498,0.611,0.0,0.0,0.0
+60+,M1_lifestyle,320,"{'natural_cardiac': 184, 'injury': 93, 'drug_alcohol': 43}",0.575,0.512,0.633,0.02,-0.04,0.077
+60+,M2_med_history,320,"{'natural_cardiac': 184, 'injury': 93, 'drug_alcohol': 43}",0.603,0.543,0.663,0.048,-0.012,0.106
