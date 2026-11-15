@@ -1,0 +1,7 @@
+level,model,block,gain_full,gain_flags_only,gain_values_blanks_randomised,share_flags_only_pct,share_values_randomised_pct
+Level1,HistGB,L,0.066,0.04,0.023,61.0,35.0
+Level1,HistGB,L+H,0.088,0.05,0.031,57.0,35.0
+Level1,LogReg,L,0.049,0.033,0.005,67.0,10.0
+Level1,LogReg,L+H,0.061,0.044,0.012,72.0,20.0
+Level2,HistGB,L,0.049,0.022,0.008,45.0,16.0
+Level2,HistGB,L+H,0.07,0.04,0.013,57.0,19.0
