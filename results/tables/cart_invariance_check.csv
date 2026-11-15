@@ -1,0 +1,9 @@
+table,duplicate_ids_total,duplicate_ids_with_rows_in_both_carts,identical_across_carts,pct_identical
+decedents,43,43,43,100.0
+env-history,43,23,23,100.0
+medical-history,43,43,43,100.0
+substance-usages,43,43,43,100.0
+medications,43,43,43,100.0
+ancestry,43,43,43,100.0
+distinctions,43,43,43,100.0
+chromosomal-abnormalities,43,43,43,100.0

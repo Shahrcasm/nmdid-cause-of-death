@@ -1,0 +1,67 @@
+manner_of_death,parsed_intent,rule,n_all_adults,n_injury_cohort
+Ingested alcohol (ethanol)-Accident,accident,default (no keyword) -> accident,192,0
+Ingested and/or injected illicit drug(s) - ((in combination with ethanol))- Accident,accident,default (no keyword) -> accident,137,0
+Ingested and/or injected prescription medications- Accident,accident,default (no keyword) -> accident,135,0
+Fall from standing height,accident,default (no keyword) -> accident,32,27
+"Pedestrian struck by (auto, pickup, truck, train, (other motor vehicle type))",accident,default (no keyword) -> accident,30,29
+"Driver of auto in collision with (auto, pickup, truck, minivan, ATV, motorcycle, (other motor vehicle type))",accident,default (no keyword) -> accident,24,24
+"Fall from (chair, table, mesa, cliff, (identify origin of fall) and approximate distance of fall in feet)",accident,default (no keyword) -> accident,21,20
+"Passenger in auto in collision with (auto, pickup, truck,minivan, ATV, motorcycle, (other motor vehicle type))",accident,default (no keyword) -> accident,17,17
+Driver of auto that left roadway (and overturned and/or became pinned underneath or in auto),accident,default (no keyword) -> accident,16,14
+Driver of pickup that left roadway (and overturned and/or became pinned underneath or in auto),accident,default (no keyword) -> accident,11,11
+"Driver of motorcycle in collision with (auto, pickup, truck, minivan, ATV, motorcycle, (other motor vehicle type))",accident,default (no keyword) -> accident,11,11
+Passenger in auto that left roadway (and overturned and/or became pinned underneath or in auto),accident,default (no keyword) -> accident,10,10
+Driver of truck that left roadway (and overturned and/or became pinned underneath or in truck),accident,default (no keyword) -> accident,8,8
+"Cyclist struck by (auto, pickup, truck, minivan, (other motor vehicle)",accident,default (no keyword) -> accident,6,5
+"Driver of motorcycle (explain circumstances briefly, e.g. left roadway and struck tree, overturned in roadway, etc.)",accident,default (no keyword) -> accident,5,5
+"Driver of pickup in collision with (auto, pickup, truck, minivan,ATV, motorcycle, (other motor vehicle type))",accident,default (no keyword) -> accident,5,5
+"Driver of truck in collision with (auto, pickup, truck, minivan, ATV, motorcycle; (other motor vehicle type))",accident,default (no keyword) -> accident,3,3
+Driver/passenger motor vehicle,accident,default (no keyword) -> accident,3,3
+"Remained outdoors exposed to (cold, heat) - ((while intoxicated))",accident,default (no keyword) -> accident,3,0
+"Inhaled (Name of product/Name of toxic agent), e.g., (Paint/Toluene) - (toxic substances abused to achieve intoxication)",accident,default (no keyword) -> accident,3,0
+Driver of motor vehicle,accident,default (no keyword) -> accident,2,2
+"Bitten/mauled/stung/kicked by (bee, dog, snake, horse, (name agent))",accident,default (no keyword) -> accident,2,2
+"Crushed/suffocated by (car falling from jack, plastic bag over head, (identify mechanism))",accident,default (no keyword) -> accident,2,2
+"Passenger on motorcycle in collision with (auto, pickup, truck, minivan, ATV, motorcycle, (other motor vehicle type))",accident,default (no keyword) -> accident,2,2
+Passenger in pickup that left roadway (and overturned and/or became pinned underneath or in auto),accident,default (no keyword) -> accident,2,2
+"Passenger in truck in collision with (auto, pickup, truck,minivan, ATV, motorcycle; (other motor vehicle type))",accident,default (no keyword) -> accident,2,2
+Received blow/collided with,accident,default (no keyword) -> accident,2,1
+"Passenger in truck in collision with (tree, embankment, rock, wall; (other fixed object))",accident,default (no keyword) -> accident,2,2
+"Victim of (house, car, trailer, open range, (other site)) fire",accident,default (no keyword) -> accident,2,0
+Inhaled (via ___),accident,default (no keyword) -> accident,2,0
+Pedestrian,accident,default (no keyword) -> accident,1,1
+"Passenger in pickup in. collision with (auto, pickup, truck, minivan, ATV, motorcycle, (other motor vehicle type))",accident,default (no keyword) -> accident,1,1
+"Driver of pickup in collision with (tree, embankment, rock, wall, (other fixed object))",accident,default (no keyword) -> accident,1,1
+"Farm or Industrial machinery accident, e.g., ""Crushed in bailer,""""Fell into packaging machine"")",accident,default (no keyword) -> accident,1,1
+"Passenger on motorcycle (explain circumstances briefly, e.g. left roadway and struck tree, overturned in roadway, etc.)",accident,default (no keyword) -> accident,1,1
+Accident-specify (To be used when none of the other categories will fit),accident,default (no keyword) -> accident,1,1
+"Cyclist (explain circumstances briefly, e.g., left roadway and struck tree; overturned in roadway, etc.)",accident,default (no keyword) -> accident,1,1
+"Passenger .in (airplane, balloon, hang glider, (other aircraft type) that crashed) - (Also parachutist)",accident,default (no keyword) -> accident,1,1
+Medical treatment - (This includes deaths accidentally caused by therapy),accident,default (no keyword) -> accident,1,0
+"Inhaled (Name of product; Name of toxic agent), e.g., (carbon monoxide in enclosed garage), (toxic substances inhaled accidentally)",accident,default (no keyword) -> accident,1,0
+Natural,natural,exact 'natural',398,2
+stabbed by assailant(s),homicide,homicide keyword,104,104
+"Shot by assailant(s) with firearm (specify type, if known)",homicide,homicide keyword,30,30
+Beaten by assailant(s),homicide,homicide keyword,17,15
+Assaulted with/by,homicide,homicide keyword,4,4
+Homicide-specify,homicide,homicide keyword,3,2
+Strangled by assailant(s),homicide,homicide keyword,2,2
+Shot self with firearm,suicide,suicide keyword,92,92
+Ingested or injected medication-Suicide,suicide,suicide keyword,29,0
+"Ingested, injected or inhaled non-prescription medication (illicit, volatiles)-Suicide",suicide,suicide keyword,12,0
+Stabbed self with,suicide,suicide keyword,7,7
+Hanged self with,suicide,suicide keyword,7,7
+"Cut self with (knife, chainsaw, razor blade, (name agent))",suicide,suicide keyword,4,4
+Suicide as pedestrian,suicide,suicide keyword,3,3
+Jumped from,suicide,suicide keyword,2,2
+Suffocated self with,suicide,suicide keyword,2,0
+Suicide-specify,suicide,suicide keyword,1,0
+Blunt trauma/multiple injuries/subdural hematoma,unclear,unclear keyword,6,6
+Undetermined after autopsy and/or toxicology,unclear,unclear keyword,6,3
+Slashed ___ with ___,unclear,unclear keyword,5,5
+Undetermined-specify,unclear,unclear keyword,5,3
+Ingested/injected medication-Unknown,unclear,unclear keyword,4,0
+Ingested alcohol- Unknown,unclear,unclear keyword,2,0
+"Victim of (car bomb, letter bomb, (type of device)) explosion",unclear,unclear keyword,1,0
+"Skeletal, mummified or decomposed remains",unclear,unclear keyword,1,0
+Gunshot wound,unclear,unclear keyword,1,1

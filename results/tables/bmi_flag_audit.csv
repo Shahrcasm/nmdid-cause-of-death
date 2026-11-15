@@ -1,0 +1,4 @@
+flag,pct_missing_overall,pct_missing_natural_cardiac,pct_missing_drug_alcohol,pct_missing_injury,cramers_v_with_decomposition_score,cramers_v_with_level1,chi2_p_vs_level1
+cadaver_bmi_missing,9.0,9.7,7.2,10.3,0.163,0.048,0.2067234986510743
+cadaver_bmi_decomp_blanked_missing,16.6,25.2,11.6,15.2,0.738,0.147,3.555016519385425e-07
+living_bmi_missing,82.8,79.1,83.6,84.8,0.061,0.062,0.07134983946575608

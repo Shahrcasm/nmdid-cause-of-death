@@ -6,6 +6,7 @@ diagnosis,41.4,59.8,43.2,26.2
 medications,34.6,50.1,45.4,12.6
 marital,28.5,32.2,26.6,27.6
 nok_interview,16.9,20.6,16.4,14.6
-cadaver_bmi_raw,91.4,90.9,93.0,90.3
-cadaver_bmi_clean,83.4,74.8,88.4,84.8
+cadaver_bmi_raw_measurements,91.4,90.9,93.0,90.3
+cadaver_bmi_main (implausible removed),91.0,90.3,92.8,89.7
+cadaver_bmi_decomp_blanked (sensitivity),83.4,74.8,88.4,84.8
 living_bmi,17.2,20.9,16.4,15.2

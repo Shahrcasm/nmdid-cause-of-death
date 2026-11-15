@@ -1,10 +1,13 @@
 step,count
 1. Raw decedent rows across 3 carts,1500
 2. Unique decedents after deduplication,1457
-3. Excluded: age < 18 or missing age,7
+3. Excluded: age < 18,6
+3b. Excluded: missing age,1
 4. Adult decedents (age >= 18),1450
 5a. Excluded from Level 1: cardiac_conflict,39
 5b. Excluded from Level 1: other causes,31
 6. Level 1 cohort (cardiac / drug_alcohol / injury),1380
+6b. Excluded from Level 2: injury with unclear manner,18
+6c. Excluded from Level 2: injury coded manner 'Natural',2
 7. Level 2 cohort (injury: accident / homicide / suicide),487
 8. Level 3 cohort (injury homicide: gunshot vs stab),137
