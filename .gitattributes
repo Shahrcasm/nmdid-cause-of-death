@@ -1,0 +1,8 @@
+# Normalise line endings; keep binaries untouched.
+* text=auto
+*.py text
+*.md text
+*.csv text
+*.txt text
+*.png binary
+*.joblib binary

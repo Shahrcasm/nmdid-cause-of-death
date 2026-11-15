@@ -4,11 +4,13 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 
-# NMDID data: never commit (NMDID data-use terms)
+# NMDID data & trained model artifacts: never commit (NMDID data-use terms)
 data/
+models/
 *.csv
 *.parquet
 *.zip
+*.joblib
 
 # Summary results ARE allowed (results/tables, results/figures).
 # Summary tables must contain aggregates only, never person-level rows.
