@@ -22,11 +22,59 @@ st.set_page_config(
 )
 
 
+class AggregateLogRegModel:
+    """Lightweight predictor reconstructed from aggregate CSV weights in results/tables/."""
+    def __init__(self, df_sub, classes):
+        self.cols = df_sub["feature"].tolist()
+        self.medians = df_sub["impute_median"].values.astype(float)
+        self.means = df_sub["scale_mean"].values.astype(float)
+        self.stds = df_sub["scale_std"].values.astype(float)
+        self.coefs = np.column_stack([df_sub[f"coef_{c}"].values.astype(float) for c in classes])
+        self.intercepts = np.array([float(df_sub[f"intercept_{c}"].iloc[0]) for c in classes])
+
+    def predict_proba(self, X_df):
+        x = X_df[self.cols].values.astype(float)
+        nan_mask = np.isnan(x)
+        if nan_mask.any():
+            x = np.where(nan_mask, self.medians, x)
+        z = (x - self.means) / np.where(self.stds == 0, 1.0, self.stds)
+        logits = z @ self.coefs + self.intercepts
+        logits = logits - logits.max(axis=1, keepdims=True)
+        exp_l = np.exp(logits)
+        return exp_l / exp_l.sum(axis=1, keepdims=True)
+
+
 @st.cache_resource
 def load_bundle():
-    if not MODEL_PATH.exists():
+    if MODEL_PATH.exists():
+        b = joblib.load(MODEL_PATH)
+        b["mode"] = "HistGradientBoosting (local model)"
+        return b
+    w_path = TABLES_DIR / "demo_logreg_weights.csv"
+    if not w_path.exists():
         return None
-    return joblib.load(MODEL_PATH)
+    w_df = pd.read_csv(w_path)
+    l1_classes = ["natural_cardiac", "drug_alcohol", "injury"]
+    l2_classes = ["accident", "homicide", "suicide"]
+    m0_df = w_df[w_df["model_id"] == "level1_M0"]
+    m2_l1_df = w_df[w_df["model_id"] == "level1_M2"]
+    m2_l2_df = w_df[w_df["model_id"] == "level2_M2"]
+    cad_med = float(m2_l1_df.loc[m2_l1_df["feature"] == "cadaver_bmi", "impute_median"].iloc[0])
+    liv_med = float(m2_l1_df.loc[m2_l1_df["feature"] == "living_bmi", "impute_median"].iloc[0])
+    return {
+        "level1_M0": AggregateLogRegModel(m0_df, l1_classes),
+        "level1_M2": AggregateLogRegModel(m2_l1_df, l1_classes),
+        "level2_M2": AggregateLogRegModel(m2_l2_df, l2_classes),
+        "columns_M0": m0_df["feature"].tolist(),
+        "columns_M2": m2_l1_df["feature"].tolist(),
+        "level1_classes": l1_classes,
+        "level2_classes": l2_classes,
+        "n_level1": 1380,
+        "n_level2": 487,
+        "median_cadaver_bmi": cad_med,
+        "median_living_bmi": liv_med,
+        "mode": "LogisticRegression (aggregate cloud weights)",
+    }
 
 
 def load_table(name):
