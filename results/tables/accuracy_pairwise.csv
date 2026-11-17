@@ -1,0 +1,13 @@
+model,feature_set,pair,auc
+HistGB,M0_base,natural_cardiac vs drug_alcohol,0.8
+HistGB,M0_base,natural_cardiac vs injury,0.757
+HistGB,M0_base,drug_alcohol vs injury,0.628
+HistGB,M2_med_history,natural_cardiac vs drug_alcohol,0.851
+HistGB,M2_med_history,natural_cardiac vs injury,0.838
+HistGB,M2_med_history,drug_alcohol vs injury,0.75
+Ensemble,M0_base,natural_cardiac vs drug_alcohol,0.805
+Ensemble,M0_base,natural_cardiac vs injury,0.761
+Ensemble,M0_base,drug_alcohol vs injury,0.622
+Ensemble,M2_med_history,natural_cardiac vs drug_alcohol,0.858
+Ensemble,M2_med_history,natural_cardiac vs injury,0.842
+Ensemble,M2_med_history,drug_alcohol vs injury,0.741

@@ -1,0 +1,13 @@
+model,feature_set,class_name,n_true,ovr_auc,recall,precision
+HistGB,M0_base,natural_cardiac,373,0.782,0.563,0.561
+HistGB,M0_base,drug_alcohol,500,0.655,0.574,0.476
+HistGB,M0_base,injury,507,0.626,0.416,0.524
+HistGB,M2_med_history,natural_cardiac,373,0.83,0.601,0.552
+HistGB,M2_med_history,drug_alcohol,500,0.752,0.576,0.617
+HistGB,M2_med_history,injury,507,0.746,0.584,0.584
+Ensemble,M0_base,natural_cardiac,373,0.781,0.622,0.507
+Ensemble,M0_base,drug_alcohol,500,0.655,0.484,0.46
+Ensemble,M0_base,injury,507,0.623,0.41,0.525
+Ensemble,M2_med_history,natural_cardiac,373,0.836,0.635,0.547
+Ensemble,M2_med_history,drug_alcohol,500,0.749,0.528,0.607
+Ensemble,M2_med_history,injury,507,0.742,0.576,0.57

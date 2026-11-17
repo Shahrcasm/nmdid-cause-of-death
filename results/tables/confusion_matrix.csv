@@ -1,0 +1,10 @@
+true_cause,predicted_cause,n,pct_of_true
+natural_cardiac,natural_cardiac,224,60.1
+natural_cardiac,drug_alcohol,73,19.6
+natural_cardiac,injury,76,20.4
+drug_alcohol,natural_cardiac,77,15.4
+drug_alcohol,drug_alcohol,288,57.6
+drug_alcohol,injury,135,27.0
+injury,natural_cardiac,105,20.7
+injury,drug_alcohol,106,20.9
+injury,injury,296,58.4
