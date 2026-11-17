@@ -246,9 +246,11 @@ PRESETS = {
 
 # ---------------- UI Header ----------------
 st.title("Lifestyle & Cause of Death in Medicolegal Deaths (NMDID)")
+st.markdown("**Estimating the broad cause of death from incomplete records**")
 st.caption(
-    "CSE 499A Capstone Demo · North South University · "
-    "Research demonstration of predictive signal vs. investigation-driven recording artifacts."
+    "Research question: from a person's recorded lifestyle and medical history, how well can we estimate the broad "
+    "cause of death, and how much does the estimate suffer when parts of the record are missing? "
+    "CSE 499A Capstone · North South University · Research demonstration, not a forensic tool."
 )
 
 bundle = load_bundle()
