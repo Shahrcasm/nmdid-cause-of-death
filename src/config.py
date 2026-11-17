@@ -37,13 +37,19 @@ FORBIDDEN_INPUTS = [
     "gender_code", "birthweight_category", "bone_density",
 ]
 
-# Columns stored in features.csv but excluded from M0-M2 (used only in RQ3).
-RQ3_ONLY = ["n_medications", "any_medication", "med_none_recorded", "nok_interview"]
-
-# Columns stored in features.csv for sensitivity analyses only. The
-# decomposition-blanked cadaver BMI depends on decomposition_score (a forbidden
-# post-mortem variable), so it is NOT part of the main feature sets.
+# ---- Columns stored in features.csv that are NEVER part of the main input sets M0-M2 ----
+# Medications are partly scene evidence ("taken at death or found in the residence"),
+# so they enter only the extended-record analysis of the accuracy ceiling.
+EXTENDED_INPUTS = ["n_medications", "any_medication", "med_none_recorded"]
+# Race and ethnicity are used to check that performance is similar across groups,
+# and in the accuracy-ceiling analysis. They are not inputs of the main models.
+DEMOGRAPHIC_EXTRA = ["race_native_american", "race_black", "race_other", "ethnicity_hispanic"]
+# Marker of a family (next-of-kin) interview: used in the data audit only.
+AUDIT_ONLY = ["nok_interview"]
+# The decomposition-blanked cadaver BMI depends on decomposition_score (a blocked
+# post-mortem variable), so it is a sensitivity analysis only.
 SENSITIVITY_ONLY = ["cadaver_bmi_decomp_blanked", "cadaver_bmi_decomp_blanked_missing"]
+NON_MODEL_COLUMNS = EXTENDED_INPUTS + DEMOGRAPHIC_EXTRA + AUDIT_ONLY + SENSITIVITY_ONLY
 
 if __name__ == "__main__":
     print("Raw folder exists:", RAW_DIR.exists())
