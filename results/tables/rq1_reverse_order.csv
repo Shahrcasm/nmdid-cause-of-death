@@ -1,4 +1,0 @@
-feature_set,n,macro_auc,macro_auc_ci_low,macro_auc_ci_high,auc_gain_vs_ref,gain_ci_low,gain_ci_high,level,model
-M0_base,1380,0.688,0.667,0.708,0.0,0.0,0.0,Level1,HistGB
-M0_plus_H,1380,0.717,0.698,0.736,0.03,0.016,0.044,Level1,HistGB
-M2_med_history,1380,0.776,0.756,0.794,0.088,0.069,0.109,Level1,HistGB
