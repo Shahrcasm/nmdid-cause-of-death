@@ -1,0 +1,5 @@
+target_coverage_pct,method,n_test,n_calibration,coverage_pct,mean_shortlist_size,coverage_pct_none_blank,coverage_pct_1_to_3_blank,coverage_pct_4_or_5_blank,coverage_pct_6_blank,coverage_pct_7_or_8_blank
+90,one threshold,493,238,93.5,2.35,100.0,94.3,96.2,96.8,90.3
+90,threshold adjusted for blank sections,493,238,93.5,2.35,91.9,91.4,97.5,96.8,91.5
+95,one threshold,493,238,95.7,2.52,100.0,97.1,97.5,100.0,92.7
+95,threshold adjusted for blank sections,493,238,95.9,2.59,100.0,100.0,98.8,100.0,92.3
