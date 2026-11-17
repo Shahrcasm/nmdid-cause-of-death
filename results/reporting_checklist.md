@@ -1,63 +1,63 @@
 # TRIPOD+AI Reporting Checklist (mapping to this repository)
 
-TRIPOD+AI (Collins et al., BMJ 2024) applies to studies that develop or evaluate prediction models. This study is an *explanatory* prediction analysis: its aim is to quantify and decompose incremental discrimination, not to deploy a model. Items for clinical deployment are marked not applicable. "Paper" means the manuscript still to be written; draft text for most items is in `results/methods_draft.md`.
+TRIPOD+AI (Collins et al., BMJ 2024) covers studies that develop or evaluate prediction models. This study develops and internally validates models that estimate the broad cause of death from structured decedent records, and evaluates how they behave when parts of the record are missing. It is not a clinical or forensic decision tool; items about deployment are answered with that in mind.
 
 | # | Item | Where it is addressed | Status |
 |---|------|-----------------------|--------|
 | 1 | Title identifies a prediction-model study, population, outcome | Paper title | To write |
 | 2 | Structured abstract | Paper | To write |
 | 3a | Background, rationale, existing models | Paper introduction | To write |
-| 3b | Rationale for AI/ML methods | `methods_draft.md`, Statistical analysis | Drafted |
-| 3c | Health inequalities across groups | Sex-stratified importance, age-band models (`rq2_*`) | Done |
-| 4 | Objectives (develop / evaluate) | README "Research Questions" | Done |
-| 5a | Data sources, design | `methods_draft.md`, Study population; carts and cart-design limitation | Drafted |
-| 5b | Dates of data collection | `cohort_flow.csv`; deaths 2010 to 2021 (4 after 2017, sensitivity in `robustness.csv`) | Done |
-| 6a | Setting (single medical investigator office) | `methods_draft.md`, Limitation 4 | Drafted |
+| 3b | Rationale for AI/ML methods | `methods_draft.md`, Validation and statistics | Drafted |
+| 3c | Health inequalities across groups | Accuracy by sex, age band, race and ethnicity (`accuracy_subgroups.csv`) | Done |
+| 4 | Objectives (develop / evaluate) | README "Research statement" and questions | Done |
+| 5a | Data sources, design | `methods_draft.md`, Data and cohort; cart design in Limitations | Drafted |
+| 5b | Dates of data collection | Deaths 2010 to 2021, 4 after 2017 (`controls_robustness.csv`, deaths after 2017 excluded) | Done |
+| 6a | Setting (single medical investigator office) | `methods_draft.md`, Limitations | Drafted |
 | 6b | Eligibility criteria | `cohort_flow.csv`, `src/01_build_dataset.py` | Done |
 | 6c | Treatments received | Not applicable (decedents) | N/A |
 | 7 | Data preparation, pre-processing | `src/01_build_dataset.py`; BMI rules and audit in `bmi_flag_audit.csv` | Done |
-| 8a | Outcome definition and how assessed | Outcome hierarchy; parsing rules in `intent_parsing_audit.csv` | Done |
-| 8b | Outcome assessed blind to predictors | Outcomes come from the medical investigator record, predictors from the same record. **Not blind**: this is the recording-artifact problem the study quantifies (RQ3) | Discuss |
-| 8c | Outcome assessor qualifications | NMDID / OMI investigators and pathologists | To write |
-| 9a | Choice of predictors | Lifestyle and medical-history blocks, `methods_draft.md` | Drafted |
-| 9b | Predictor definitions and timing | `src/01_build_dataset.py`; all pre-mortem metadata except cadaver BMI (autopsy measurement) | Drafted |
-| 9c | Predictor assessment blind to outcome | Not blind (see 8b); investigated directly in RQ3 | Discuss |
-| 10 | Sample size | No formal calculation (fixed archive); intervals reported for every estimate; Level 3 power limitation stated | Drafted |
-| 11 | Missing data handling | Explicit `_missing` indicators; HistGB native NaN handling; median imputation inside folds for RF/LogReg; complete-case and blank-randomised analyses (RQ3) | Done |
-| 12a | Data use (development / evaluation split) | Repeated stratified 5-fold CV (5 x 5), no separate test set | Done |
-| 12b | Predictor handling in models | `model_utils.make_model` | Done |
-| 12c | Model type, building, hyper-parameter tuning | Fixed settings, no tuning (`model_utils.py`) | Done |
-| 12d | Heterogeneity across clusters/centres | Cart = class confound; within-cart check; cart-invariance audit | Done |
-| 12e | Performance measures | Macro AUC, macro F1, balanced accuracy, Brier, calibration curves | Done |
+| 8a | Outcome definition and how assessed | Outcome levels in `methods_draft.md`; parsing rules in `intent_parsing_audit.csv` | Done |
+| 8b | Outcome assessed blind to predictors | **Not blind**: outcome and inputs come from the same investigation record. Quantified in the explanation analysis (`explanation_regimes.csv`, `explanation_gain_shares.csv`) | Discuss |
+| 8c | Outcome assessor qualifications | NMDID / Office of the Medical Investigator investigators and pathologists | To write |
+| 9a | Choice of predictors | Eight record sections, `methods_draft.md` | Drafted |
+| 9b | Predictor definitions and timing | `src/01_build_dataset.py`; all metadata recorded during the death investigation; cadaver BMI is an autopsy measurement | Drafted |
+| 9c | Predictor assessment blind to outcome | Not blind (see 8b) | Discuss |
+| 10 | Sample size | Fixed archive, no formal calculation; intervals reported for every estimate; small negative control stated | Drafted |
+| 11 | Missing data handling | Explicit recorded / not-recorded flags; native missing values in gradient boosting; median imputation inside folds for the other models; four handlings of unavailable sections, including nearest-neighbour multiple imputation, plus a reduced-model reference (`missing_withheld_scenarios.csv`); complete cases (`explanation_regimes.csv`) | Done |
+| 12a | Data use (development / evaluation split) | Repeated stratified 5-fold cross-validation (5 x 5), no separate test set | Done |
+| 12b | Predictor handling in models | `model_utils.make_model`, `model_utils.Sections` | Done |
+| 12c | Model type, building, hyper-parameter tuning | Fixed settings; nested tree-size search only in the accuracy-ceiling analysis (`accuracy_ceiling.csv`) | Done |
+| 12d | Heterogeneity across clusters/centres | Cart design; within-cart check (`controls_robustness.csv`); cart-invariance audit (`cart_invariance_check.csv`) | Done |
+| 12e | Performance measures | Accuracy, macro AUC, balanced accuracy, macro F1, Brier, top-2 accuracy, calibration error and slope, shortlist coverage | Done |
 | 12f | Model updating / recalibration | Not applicable | N/A |
-| 12g | Model comparison methods | Paired bootstrap of AUC differences (same resamples) | Done |
-| 13 | Class imbalance methods | Balanced class weights (RF, LogReg); HistGB weighted as robustness | Done |
-| 14 | Fairness approaches | Sex and age-band stratified results | Done |
-| 15 | Model output and decision thresholds | Probabilities; no decision threshold (not a decision tool) | Done |
-| 16 | Differences development vs evaluation data | Not applicable (internal validation only) | N/A |
+| 12g | Model comparison methods | Paired bootstrap of differences (same resamples) | Done |
+| 13 | Class imbalance methods | Balanced class weights (random forest, logistic regression); weighted gradient boosting as robustness | Done |
+| 14 | Fairness approaches | Subgroup accuracy by sex, age, race and ethnicity; race and ethnicity are not model inputs | Done |
+| 15 | Model output and decision thresholds | Probabilities per cause; 90/95/99% shortlists, including thresholds adjusted for missingness (`reliability_conformal.csv`); answer-only-when-confident thresholds (`reliability_selective.csv`); recalibration (`missing_recalibration.csv`) | Done |
+| 16 | Differences development vs evaluation data | Validation on later years (trained to 2014, tested 2015 on) and on held-out county groups (`validation_temporal.csv`, `validation_regional.csv`) | Done |
 | 17 | Ethics approval | NMDID data-use agreement; university ethics statement | **To obtain/state** |
 | 18a | Funding | Paper | To write |
 | 18b | Conflicts of interest | Paper | To write |
 | 18c | Protocol / registration | Not registered; analysis plan fixed in code history (git log) | State in paper |
-| 18d | Data availability | Restricted (NMDID DUA); aggregate tables in `results/tables` | Done |
+| 18d | Data availability | Restricted (NMDID data-use agreement); aggregate tables in `results/tables` | Done |
 | 18e | Code availability | This repository | Done |
 | 19 | Patient and public involvement | Not applicable / state none | To write |
 | 20a | Participant flow | `cohort_flow.csv` (figure to draw) | Table done |
-| 20b | Participant characteristics | `paper_table1_cohort.csv`, `coverage_by_class.csv` | Done |
+| 20b | Participant characteristics | `paper_table1_cohort.csv` | Done |
 | 20c | Comparison of development and evaluation data | Not applicable | N/A |
 | 21 | Number of participants and outcome events | `cohort_flow.csv`, per-analysis `n` columns | Done |
-| 22 | Full model specification | `model_utils.py`; trained demo model is not distributed (DUA) | Done |
-| 23a | Model performance with CIs | `paper_table2_rq1_gains.csv`, `paper_table4_rq3_and_controls.csv` | Done |
-| 23b | Performance in key subgroups | Age bands, sex, NOK strata, complete cases | Done |
+| 22 | Full model specification | `model_utils.py`; trained demo models are not distributed (data-use agreement) | Done |
+| 23a | Model performance with CIs | `paper_table2_accuracy.csv`, `paper_table3_missing_information.csv`, `paper_table3b_hidden_sections.csv`, `paper_table4_reliability_explanation_controls.csv` | Done |
+| 23b | Performance in key subgroups | `accuracy_subgroups.csv`; by number of blank sections in `missing_natural.csv` | Done |
 | 24 | Model updating results | Not applicable | N/A |
-| 25 | Interpretation | `methods_draft.md`, Interpretation and limitations | Drafted |
-| 26 | Limitations | Same section (7 limitations) | Drafted |
-| 27a | Handling poor-quality or missing input data in use | Not applicable (not deployed); app labels blanks explicitly | N/A |
-| 27b | User interaction / expertise needed | Demo app is a teaching tool, labelled as such | Done |
-| 27c | Implications and future research | Paper discussion | To write |
+| 25 | Interpretation | `methods_draft.md`, Results | Drafted |
+| 26 | Limitations | `methods_draft.md`, Limitations (7 items) | Drafted |
+| 27a | Handling poor-quality or missing input data in use | Withholding-trained model; "which question to ask next" ranking (`questions_*.csv`); the demo app shows both handlings side by side | Done |
+| 27b | User interaction / expertise needed | Demo app labelled a research demonstration, not a forensic tool | Done |
+| 27c | Implications and future research | Paper discussion; living-person prediction needs a prospective cohort | To write |
 
 ## Items the authors must still supply
 1. Ethics statement (item 17): institutional review or exemption, and the NMDID data-use agreement reference.
 2. Participant flow diagram (item 20a), drawn from `cohort_flow.csv`.
 3. Funding, conflicts, and patient-involvement statements (items 18a, 18b, 19).
-4. A STROBE checklist as well if the journal treats the study as observational epidemiology; most items above map to it directly.
+4. A STROBE checklist as well if the journal treats the study as observational epidemiology.
