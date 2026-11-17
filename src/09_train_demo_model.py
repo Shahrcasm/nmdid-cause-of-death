@@ -11,9 +11,11 @@ from restricted NMDID data).
       level2_M2        intent within injury deaths
       column lists, sections, class names, training sizes, shortlist thresholds
 
-Also exports aggregate logistic-regression weights to results/tables so that a
-GitHub-only deployment of the app works without the restricted model file.
-Run after 06_reliability.py (it reads the shortlist thresholds).
+Also exports, for the deployed app (no restricted model file online), aggregate
+weights of three logistic regressions (age + sex, all inputs, and the
+withholding-trained version) plus the intent model, and their 90/95/99% shortlist
+thresholds computed from held-out predictions. These files hold summary numbers only.
+Run after 06_reliability.py (it reads the shortlist thresholds of the local models).
 """
 import warnings
 warnings.filterwarnings("ignore")
@@ -89,8 +91,49 @@ if __name__ == "__main__":
     w_rows = (pack_logreg(mu.make_model("LogReg").fit(l1[cols_m0], y1), cols_m0, "level1_M0", mu.LEVEL1_CLASSES)
               + pack_logreg(mu.make_model("LogReg").fit(l1[cols_m2], y1), cols_m2, "level1_M2", mu.LEVEL1_CLASSES)
               + pack_logreg(mu.make_model("LogReg").fit(l2[cols_m2], y2), cols_m2, "level2_M2", mu.LEVEL2_CLASSES))
+    # Withholding-trained logistic regression for the deployed app.
+    Xa, ya = sec.augment(l1[cols_m2], y1, seed=config.SEED)
+    w_rows += pack_logreg(mu.make_model("LogReg").fit(Xa, ya), sec.all_columns, "level1_withheld", mu.LEVEL1_CLASSES)
     pd.DataFrame(w_rows).to_csv(config.TABLES_DIR / "demo_logreg_weights.csv", index=False)
 
-    print("Saved models/demo_models.joblib and results/tables/demo_logreg_weights.csv")
+    # Shortlist thresholds of the deployed logistic regressions, from held-out predictions (5 x 5 CV).
+    def oof_logreg(withheld):
+        splits, R = mu.cv_splits(l1[cols_m2], y1)
+        P = np.zeros((R, len(y1), 3))
+        for f, (rep, tr, te) in enumerate(splits):
+            X_tr, X_te = l1.iloc[tr][cols_m2], l1.iloc[te][cols_m2]
+            if withheld:
+                Xa_f, ya_f = sec.augment(X_tr, y1[tr], seed=config.SEED + f)
+                model = mu.make_model("LogReg").fit(Xa_f, ya_f)
+                P[rep, te] = model.predict_proba(sec.as_withheld(X_te, sec.mask(len(te), [])))
+            else:
+                P[rep, te] = mu.make_model("LogReg").fit(X_tr, y1[tr]).predict_proba(X_te)
+        return P.mean(axis=0)
+
+    def quantile_threshold(scores, alpha):
+        sc = np.sort(scores)
+        k = int(np.ceil((len(sc) + 1) * (1 - alpha)))
+        return float(sc[k - 1]) if k <= len(sc) else 1.0
+
+    bands = [("none", 0, 0), ("1 to 3", 1, 3), ("4 or 5", 4, 5), ("6", 6, 6), ("7 or 8", 7, 8)]
+    n_blank = sec.not_recorded(l1).sum(axis=1)
+    band = np.array([next(b for b, lo, hi in bands if lo <= v <= hi) for v in n_blank], dtype=object)
+    t_rows = []
+    for model_id, withheld in [("standard", False), ("withheld", True)]:
+        p = oof_logreg(withheld)
+        scores = 1 - p[np.arange(len(y1)), y1]
+        for target in (90, 95, 99):
+            alpha = 1 - target / 100
+            t_rows.append({"model": model_id, "method": "marginal", "band": "all", "target_coverage_pct": target,
+                           "threshold": round(quantile_threshold(scores, alpha), 4), "n_calibration": len(scores),
+                           "heldout_accuracy": round(mu.accuracy(y1, p), 3)})
+            for b, _, _ in bands:
+                m = band == b
+                t_rows.append({"model": model_id, "method": "missingness-conditional", "band": b, "target_coverage_pct": target,
+                               "threshold": round(quantile_threshold(scores[m], alpha), 4), "n_calibration": int(m.sum()),
+                               "heldout_accuracy": round(mu.accuracy(y1, p), 3)})
+    pd.DataFrame(t_rows).to_csv(config.TABLES_DIR / "demo_shortlist_thresholds.csv", index=False)
+
+    print("Saved models/demo_models.joblib, results/tables/demo_logreg_weights.csv and demo_shortlist_thresholds.csv")
     print("Level 1 training n:", len(l1), "| Level 2 training n:", len(l2), "| M2 inputs:", len(cols_m2))
     print("Shortlist thresholds:", thresholds if thresholds else "not found (run 06_reliability.py first)")
