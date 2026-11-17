@@ -148,16 +148,17 @@ streamlit run app/app.py
 `pip install -r requirements.txt` installs compatible newer versions instead; it is what the deployed app uses, and the numbers may then differ slightly. On a dual-core laptop the full run takes about 45 minutes with two parallel streams (03, 04b, 05 and 07b; and 04, 06 and 07). Setting `NMDID_FAST=1` runs a quick smoke test with one cross-validation repeat and 50 bootstrap draws; its numbers are not for reporting.
 
 ## Demo app and deployment
-`app/app.py` is a Streamlit research demonstration, not a forensic tool. It has two tabs:
-- **Case simulator.** Enter a hypothetical person and see the probability of each broad cause from age and sex alone and from the full record. Set any field to "Unknown" to compare the standard model, which reads a blank as "not recorded by the investigator", with the withholding-trained model, which reads it as "not available".
-- **Results dashboard.** Every result table and figure in `results/`.
+`app/app.py` is a Streamlit research demonstration, not a forensic tool. It has three tabs:
+- **Case simulator.** Describe a hypothetical person across all eight record sections and see the probability of each broad cause from age and sex alone, from the standard model (which reads a blank as "not recorded by the investigator") and from the withholding-trained model (which reads it as "not available"), with 90% shortlists adjusted for the number of blank sections.
+- **Compare missing fields.** The same person with different sections removed, side by side, for both models.
+- **Results dashboard.** An overview of the main numbers, then every analysis with its key figures, readable tables and the full tables on request.
 
 | Mode | Models used | When |
 |---|---|---|
-| Local | Gradient boosting and the withholding-trained model from `models/demo_models.joblib`, with adjusted shortlists and the next-question ranking | After running `src/09_train_demo_model.py`; the file is git-ignored because it is derived from restricted data |
-| Deployed | Logistic regression rebuilt from the aggregate weights in `results/tables/demo_logreg_weights.csv` | When the model file is absent, as on Streamlit Community Cloud |
+| Local | Gradient boosting and the withholding-trained model from `models/demo_models.joblib`, plus a personal "which question to ask next" ranking | After running `src/09_train_demo_model.py`; the file is git-ignored because it is derived from restricted data |
+| Deployed | Standard and withholding-trained logistic regressions rebuilt from the aggregate weights in `results/tables/demo_logreg_weights.csv`, with shortlist thresholds from `results/tables/demo_shortlist_thresholds.csv` | When the model file is absent, as on Streamlit Community Cloud |
 
-The deployed app runs on Streamlit Community Cloud from this repository (branch `master`, main file `app/app.py`) and rebuilds automatically after every push. No individual-level data is deployed. After results change, rerun `src/09_train_demo_model.py` so the aggregate weights match, then push.
+The deployed app runs on Streamlit Community Cloud from this repository (branch `master`, main file `app/app.py`) and rebuilds automatically after every push. It uses only aggregate weights and thresholds; no individual-level data is deployed. After results change, rerun `src/09_train_demo_model.py` so the weights and thresholds match, then push.
 
 ## Output tables
 All tables are in `results/tables/`.
