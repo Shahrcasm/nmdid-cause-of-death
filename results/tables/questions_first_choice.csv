@@ -1,0 +1,9 @@
+section,asked_first_by_model_pct,first_in_fixed_order_pct_of_folds,asked_first_pct_true_natural_cardiac,asked_first_pct_true_drug_alcohol,asked_first_pct_true_injury
+Body size (BMI),47.9,76.0,47.6,48.2,47.7
+Diagnoses,25.8,24.0,34.6,24.0,21.2
+Drug use,11.6,0.0,4.3,13.1,15.5
+Drinking,8.2,0.0,4.9,9.6,9.3
+Tobacco,2.7,0.0,2.5,2.3,3.1
+"Education, work, diet",1.6,0.0,2.7,1.0,1.4
+Marital status,1.1,0.0,1.2,1.0,1.1
+Past injuries and surgery,1.1,0.0,2.1,0.7,0.8

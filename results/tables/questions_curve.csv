@@ -1,0 +1,28 @@
+order,description,questions_asked,accuracy,accuracy_sd,mean_probability_of_true_cause
+guided,Model chooses the next question for each person,0,0.515,0.0101,0.426
+guided,Model chooses the next question for each person,1,0.504,0.0178,0.451
+guided,Model chooses the next question for each person,2,0.52,0.0162,0.472
+guided,Model chooses the next question for each person,3,0.537,0.0072,0.488
+guided,Model chooses the next question for each person,4,0.554,0.0082,0.5
+guided,Model chooses the next question for each person,5,0.559,0.0059,0.504
+guided,Model chooses the next question for each person,6,0.561,0.0085,0.508
+guided,Model chooses the next question for each person,7,0.562,0.0145,0.509
+guided,Model chooses the next question for each person,8,0.564,0.0146,0.506
+fixed,One fixed order for everyone,0,0.515,0.0101,0.426
+fixed,One fixed order for everyone,1,0.484,0.0087,0.435
+fixed,One fixed order for everyone,2,0.504,0.0143,0.456
+fixed,One fixed order for everyone,3,0.535,0.013,0.478
+fixed,One fixed order for everyone,4,0.557,0.0123,0.494
+fixed,One fixed order for everyone,5,0.552,0.016,0.496
+fixed,One fixed order for everyone,6,0.561,0.0129,0.503
+fixed,One fixed order for everyone,7,0.564,0.0144,0.505
+fixed,One fixed order for everyone,8,0.564,0.0146,0.506
+random,Random order,0,0.515,0.0101,0.426
+random,Random order,1,0.503,0.0087,0.436
+random,Random order,2,0.514,0.0105,0.448
+random,Random order,3,0.518,0.0145,0.458
+random,Random order,4,0.526,0.0156,0.469
+random,Random order,5,0.531,0.0139,0.477
+random,Random order,6,0.546,0.0101,0.486
+random,Random order,7,0.556,0.012,0.496
+random,Random order,8,0.564,0.0146,0.506
