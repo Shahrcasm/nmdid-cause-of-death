@@ -127,7 +127,7 @@ def contains_any(text, words):
 
 
 def level1(cause, manner):
-    """Kind of death."""
+    """Kind of death (Level 1 class)."""
     if pd.isna(cause):
         return "other"
     if cause in config.CARDIAC:
@@ -142,7 +142,7 @@ def level1(cause, manner):
 
 
 def intent(manner):
-    """Who caused the death, read from the manner text."""
+    """Who caused the death, read from the manner text (Level 2 intent)."""
     if pd.isna(manner):
         return "unclear"
     text = str(manner).strip().lower()
@@ -351,8 +351,10 @@ def build_medical_history(tables, people):
     return features
 
 
-def build_rq3_extras(tables, cohort):
-    """Medications and Family-interview marker for RQ3 analysis."""
+def build_extras(tables, cohort):
+    """Columns that are stored but never part of M0-M2: medications (extended-record
+    analysis), the family-interview marker (data audit) and race / ethnicity
+    (subgroup performance and the accuracy-ceiling analysis)."""
     features = pd.DataFrame({config.KEY: cohort[config.KEY].values})
 
     # Medications block.
@@ -373,6 +375,16 @@ def build_rq3_extras(tables, cohort):
     has_gender = cohort["gender_code"].notna().values
     has_birthwt = cohort["birthweight_category"].notna().values
     features["nok_interview"] = (has_nok_env | has_gender | has_birthwt).astype(int)
+
+    # Race and ethnicity (distinctions table; a person can have more than one row).
+    dist = tables["distinctions"]
+    def any_row(mask):
+        return features[config.KEY].isin(dist[mask][config.KEY]).astype(int)
+    race = dist["race"].fillna("")
+    features["race_native_american"] = any_row(race == "Native American")
+    features["race_black"] = any_row(race == "Black or African-American")
+    features["race_other"] = any_row(~race.isin(["", "White", "Native American", "Black or African-American"]))
+    features["ethnicity_hispanic"] = any_row((dist["ethnicity"] == "Hispanic or Latino") | (race == "Hispanic"))
     return features
 
 
@@ -386,14 +398,14 @@ if __name__ == "__main__":
     mbmi = build_marital_and_bmi(cohort)
     ext = build_extended_lifestyle(tables, people)
     medh = build_medical_history(tables, people)
-    rq3 = build_rq3_extras(tables, cohort)
+    extras = build_extras(tables, cohort)
 
     # Combine all blocks into one wide features table (1 row per adult decedent).
     features = base.merge(life, on=config.KEY)
     features = features.merge(mbmi, on=config.KEY)
     features = features.merge(ext, on=config.KEY)
     features = features.merge(medh, on=config.KEY)
-    features = features.merge(rq3, on=config.KEY)
+    features = features.merge(extras, on=config.KEY)
 
     # Verify no forbidden input column leaked into features (except the join key).
     leaked = [col for col in features.columns if col in config.FORBIDDEN_INPUTS and col != config.KEY]
@@ -405,11 +417,12 @@ if __name__ == "__main__":
 
     print("Saved cohort.csv:", cohort.shape)
     print("Saved features.csv:", features.shape)
-    n_model = features.shape[1] - 1 - len(config.RQ3_ONLY) - len(config.SENSITIVITY_ONLY)
-    print("Model features (M2):", n_model, "| RQ3-only:", len(config.RQ3_ONLY),
-          "| sensitivity-only:", len(config.SENSITIVITY_ONLY))
+    n_model = features.shape[1] - 1 - len(config.NON_MODEL_COLUMNS)
+    print("Model inputs (M2):", n_model, "| stored but never in M0-M2:", len(config.NON_MODEL_COLUMNS))
+    missing_extra = [c for c in config.NON_MODEL_COLUMNS if c not in features.columns]
+    assert not missing_extra, f"columns named in config but not built: {missing_extra}"
 
-    # Check RQ3 markers on the Level-1 cohort (n=1380).
+    # Check the extra columns on the Level-1 cohort (n=1380).
     l1_ids = cohort[cohort["level1"].isin(["natural_cardiac", "drug_alcohol", "injury"])][config.KEY]
     f_l1 = features[features[config.KEY].isin(l1_ids)]
     print(f"Medications present (Level-1 cohort): {100 * f_l1['any_medication'].mean():.1f}%")

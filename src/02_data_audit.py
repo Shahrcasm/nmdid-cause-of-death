@@ -1,4 +1,4 @@
-"""Phase 1: cohort flow, Table 1, coverage, leakage and design audits.
+"""Step 2 - Data audit: cohort flow, Table 1, coverage, leakage and design audits.
 
 Outputs (results/tables unless noted):
   cohort_flow.csv            counts computed from the raw files (nothing hard-coded)
