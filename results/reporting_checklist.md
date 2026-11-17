@@ -46,7 +46,7 @@ TRIPOD+AI (Collins et al., BMJ 2024) covers studies that develop or evaluate pre
 | 20b | Participant characteristics | `paper_table1_cohort.csv` | Done |
 | 20c | Comparison of development and evaluation data | Not applicable | N/A |
 | 21 | Number of participants and outcome events | `cohort_flow.csv`, per-analysis `n` columns | Done |
-| 22 | Full model specification | `model_utils.py`; trained demo models are not distributed (data-use agreement) | Done |
+| 22 | Full model specification | `model_utils.py`; exact software versions in the README and the methods draft; trained demo models are not distributed (data-use agreement) | Done |
 | 23a | Model performance with CIs | `paper_table2_accuracy.csv`, `paper_table3_missing_information.csv`, `paper_table3b_hidden_sections.csv`, `paper_table4_reliability_explanation_controls.csv` | Done |
 | 23b | Performance in key subgroups | `accuracy_subgroups.csv`; by number of blank sections in `missing_natural.csv` | Done |
 | 24 | Model updating results | Not applicable | N/A |
