@@ -262,11 +262,21 @@ with tab_sim:
             "Run `python src/09_train_demo_model.py` first."
         )
     else:
+        _acc = load_table("accuracy_metrics.csv")
+        _key = "LogReg" if bundle["mode"].startswith("Logistic") else "HistGB"
+        _acc_txt = "not available"
+        if _acc is not None:
+            _r = _acc[(_acc["level"] == "Level1") & (_acc["model"] == _key) & (_acc["feature_set"] == "M2_med_history")]
+            if len(_r):
+                _acc_txt = f"{100 * float(_r['accuracy'].iloc[0]):.1f}%"
+        _compare = ("Set a field to **Unknown** and compare how the standard model (which reads a blank as 'the investigator "
+                    "recorded nothing') and the withholding-trained model (which reads it as 'not available to us') respond."
+                    if "level1_withheld" in bundle else
+                    "The withholding-trained model and the shortlists need the local model file and are not shown in this deployment.")
         st.info(
-            "**Important:** Predictions below come from `HistGradientBoosting` trained on NMDID metadata "
-            f"(Level 1 `n={bundle['n_level1']}`, Level 2 `n={bundle['n_level2']}`). Notice how changing fields between "
-            "**Unknown / Not recorded** and recorded answers shifts probabilities—illustrating both lifestyle signal "
-            "and recording-pattern artifacts (RQ3)."
+            f"Research demonstration, not a forensic tool. Models: {bundle['mode']} trained on NMDID records "
+            f"(broad cause n={bundle['n_level1']}, intent n={bundle['n_level2']}). Held-out accuracy of this model for the "
+            f"broad cause: {_acc_txt} (three causes). {_compare}"
         )
 
         preset_name = st.selectbox("Load an illustrative case preset (or choose Custom):", list(PRESETS.keys()))
@@ -318,112 +328,179 @@ with tab_sim:
         }
         X_m2 = build_feature_row(bundle["columns_M2"], inputs)
         X_m0 = X_m2[bundle["columns_M0"]]
-
         p1_m0 = bundle["level1_M0"].predict_proba(X_m0)[0]
         p1_m2 = bundle["level1_M2"].predict_proba(X_m2)[0]
         p2_m2 = bundle["level2_M2"].predict_proba(X_m2)[0]
+        has_withheld = "level1_withheld" in bundle
+        if has_withheld:
+            X_w = X_m2.copy()
+            unavailable = []
+            for sec_name, flags in bundle["sections"].items():
+                blank = all(X_w.at[0, f] == 1 for f in flags)
+                X_w["withheld_" + sec_name] = 1 if blank else 0
+                if blank:
+                    unavailable.append(bundle["section_labels"][sec_name])
+                    for f in flags:
+                        X_w.at[0, f] = 0
+            p1_w = bundle["level1_withheld"].predict_proba(X_w[bundle["columns_withheld"]])[0]
+
+        n_blank = None
+        if "sections" in bundle:
+            n_blank = sum(all(X_m2.at[0, f] == 1 for f in flags) for flags in bundle["sections"].values())
+        band = next((b for b, lo, hi in bundle.get("bands", []) if n_blank is not None and lo <= n_blank <= hi), None)
+
+        def shortlist(p, model_key, target=90, band=None):
+            thr = None
+            if band is not None:
+                thr = bundle.get("shortlist_thresholds_band", {}).get(model_key, {}).get(target, {}).get(band)
+            if thr is None:
+                thr = bundle.get("shortlist_thresholds", {}).get(model_key, {}).get(target)
+            if thr is None:
+                return "not available"
+            names = ["Natural cardiac", "Drug / alcohol", "Injury"]
+            keep = [n for n, v in zip(names, p) if v >= 1 - thr]
+            return ", ".join(keep) if keep else "none (all probabilities low)"
 
         st.divider()
-        r1, r2 = st.columns(2)
+        r1, r2 = st.columns([3, 2])
         with r1:
-            st.subheader("Level 1: Broad Cause of Death")
-            df_l1 = pd.DataFrame({
-                "Class": ["Natural Cardiac", "Drug / Alcohol", "Injury"],
-                "M0 (Age + Sex only)": np.round(p1_m0, 3),
-                "M2 (+ Lifestyle & Med History)": np.round(p1_m2, 3),
-                "Shift (M2 - M0)": np.round(p1_m2 - p1_m0, 3),
-            })
+            st.subheader("Broad cause of death")
+            table = {"Cause": ["Natural cardiac", "Drug / alcohol", "Injury"],
+                     "Age + sex only": np.round(p1_m0, 3),
+                     "Standard model (blank = not recorded)": np.round(p1_m2, 3)}
+            if has_withheld:
+                table["Withholding-trained (blank = not available)"] = np.round(p1_w, 3)
+            df_l1 = pd.DataFrame(table)
             st.dataframe(df_l1, hide_index=True, width="stretch")
-            st.bar_chart(df_l1.set_index("Class")[["M0 (Age + Sex only)", "M2 (+ Lifestyle & Med History)"]])
-
+            st.bar_chart(df_l1.set_index("Cause"))
+            st.markdown(f"**90% shortlist, standard model:** {shortlist(p1_m2, 'standard', band=band)}")
+            if band is not None:
+                st.caption(f"Shortlist threshold adjusted for {n_blank} of 8 sections left blank.")
+            if has_withheld:
+                st.markdown(f"**90% shortlist, withholding-trained model:** {shortlist(p1_w, 'withheld')}")
+                st.caption("Sections treated as not available: " + (", ".join(unavailable) if unavailable else "none"))
+            if has_withheld and "donors" in bundle:
+                def _entropy(p):
+                    q = np.clip(p, 1e-12, 1.0)
+                    return -(q * np.log(q)).sum(axis=-1)
+                h_now, ranking = float(_entropy(p1_w)), []
+                for sec_name, cols in bundle["section_columns"].items():
+                    if X_w.at[0, "withheld_" + sec_name] != 1:
+                        continue
+                    exp_h = 0.0
+                    for ci, c in enumerate(bundle["level1_classes"]):
+                        D = bundle["donors"][c]
+                        block = pd.concat([X_w[bundle["columns_withheld"]]] * len(D), ignore_index=True)
+                        block[cols] = D[cols].values
+                        block["withheld_" + sec_name] = 0
+                        q = bundle["level1_withheld"].predict_proba(block[bundle["columns_withheld"]])
+                        exp_h += p1_w[ci] * float(_entropy(q).mean())
+                    ranking.append((bundle["section_labels"][sec_name], 100 * (h_now - exp_h) / h_now if h_now > 0 else 0.0))
+                useful = sorted([t for t in ranking if t[1] >= 1.0], key=lambda t: -t[1])
+                if useful:
+                    st.markdown("**Which question to ask next** (withholding-trained model)")
+                    st.dataframe(pd.DataFrame([{"Ask about": a, "Expected reduction in uncertainty": f"{g:.0f}%"} for a, g in useful[:3]]),
+                                 hide_index=True, width="stretch")
+                elif ranking:
+                    st.caption("Which question to ask next: no missing section is expected to reduce the model's "
+                               "uncertainty by 1% or more for this record.")
+            else:
+                _fc = load_table("questions_first_choice.csv")
+                if _fc is not None:
+                    st.caption("Sections the model most often asks about first (held-out results): "
+                               + ", ".join(_fc["section"].head(3)) + ".")
+            st.caption("A 90% shortlist contains the true cause for about 90% of held-out people (split conformal "
+                       "prediction; threshold from results/tables/reliability_conformal.csv, applied approximately here).")
         with r2:
-            st.subheader("Level 2: Injury Intent (Conditional on Injury)")
-            df_l2 = pd.DataFrame({
-                "Intent": ["Accident", "Homicide", "Suicide"],
-                "M2 Probability": np.round(p2_m2, 3),
-            })
+            st.subheader("Intent, if the death was an injury")
+            df_l2 = pd.DataFrame({"Intent": ["Accident", "Homicide", "Suicide"], "Probability": np.round(p2_m2, 3)})
             st.dataframe(df_l2, hide_index=True, width="stretch")
-            st.bar_chart(df_l2.set_index("Intent")[["M2 Probability"]])
-            _m = load_table("rq1_metrics.csv")
+            st.bar_chart(df_l2.set_index("Intent"))
+            _m = load_table("accuracy_metrics.csv")
             if _m is not None:
                 _l2 = _m[(_m["level"] == "Level2") & (_m["feature_set"] == "M2_med_history")]
-                _rng = f"{_l2['macro_auc'].min():.2f}–{_l2['macro_auc'].max():.2f}"
-                st.caption(f"Note: Level 2 discrimination is weak (cross-validated M2 macro AUC {_rng} across models); "
-                           "mental illness in suicides is the main recorded signal.")
+                st.caption(f"Intent is hard to estimate from these records: held-out accuracy "
+                           f"{100 * _l2['accuracy'].min():.0f}% to {100 * _l2['accuracy'].max():.0f}% across models.")
 
 with tab_results:
-    sub1, sub2, sub3, sub4, sub5 = st.tabs([
-        "Data Audit & Leakage", "RQ1: Nested Gain", "RQ2: Factors & SHAP",
-        "RQ3: Recording Artifact", "Level 3 & Robustness"
-    ])
+    sub1, sub2, sub3, sub4, sub5, sub6 = st.tabs([
+        "Data audit", "Accuracy", "Missing information", "Reliability", "Explanation", "Controls"])
 
     with sub1:
         c1, c2 = st.columns(2)
         with c1:
-            st.subheader("Cohort Flow & Table 1")
+            st.subheader("Cohort flow and characteristics")
             st.dataframe(load_table("cohort_flow.csv"), hide_index=True, width="stretch")
-            st.dataframe(load_table("table1_by_class.csv"), hide_index=True, width="stretch")
-            st.subheader("Excluded Leakage Columns (Cramér's V)")
+            st.dataframe(load_table("paper_table1_cohort.csv"), hide_index=True, width="stretch")
+            st.subheader("Blocked columns (Cramér's V with the broad cause)")
             st.dataframe(load_table("leakage_check.csv"), hide_index=True, width="stretch")
         with c2:
-            show_fig("coverage_heatmap.png", "Metadata Field Coverage by Level-1 Class (%)")
-            st.dataframe(load_table("missingness_tests.csv"), hide_index=True, width="stretch")
-            st.subheader("Cadaver BMI Flag Audit")
-            st.caption("Blanking BMI for decomposition copies a forbidden post-mortem variable into the missing flag; "
-                       "the main analysis uses the raw-measurement version.")
+            show_fig("coverage_heatmap.png", "Which fields investigators record, by cause of death (%)")
+            st.subheader("Cadaver BMI flag audit")
             st.dataframe(load_table("bmi_flag_audit.csv"), hide_index=True, width="stretch")
-            st.subheader("Cart Invariance (Cross-Cart Duplicate Records)")
+            st.subheader("Cross-cart duplicate records")
             st.dataframe(load_table("cart_invariance_check.csv"), hide_index=True, width="stretch")
 
     with sub2:
-        st.subheader("RQ1: 5×5 Repeated Stratified CV Metrics & Gains")
-        st.dataframe(load_table("rq1_metrics.csv"), hide_index=True, width="stretch")
-        st.dataframe(load_table("rq1_gains.csv"), hide_index=True, width="stretch")
-        st.subheader("Reverse Entry Order (medical history first)")
-        st.dataframe(load_table("rq1_reverse_order.csv"), hide_index=True, width="stretch")
+        show_fig("accuracy_by_inputs.png", "Accuracy and macro AUC by inputs and model (held-out people)")
+        show_fig("validation.png", "Validation on later years and on held-out regions")
+        st.subheader("Accuracy by model and inputs")
+        st.dataframe(load_table("paper_table2_accuracy.csv"), hide_index=True, width="stretch")
         c1, c2 = st.columns(2)
         with c1:
-            show_fig("rq1_calibration_level1.png", "Level 1 Calibration Curves (HistGB)")
+            st.write("**Per cause**")
+            st.dataframe(load_table("accuracy_per_class.csv"), hide_index=True, width="stretch")
+            st.write("**Confusion matrix (gradient boosting, all inputs)**")
+            st.dataframe(load_table("confusion_matrix.csv"), hide_index=True, width="stretch")
         with c2:
-            show_fig("rq1_calibration_level2.png", "Level 2 Calibration Curves (HistGB)")
+            st.write("**Subgroups**")
+            st.dataframe(load_table("accuracy_subgroups.csv"), hide_index=True, width="stretch")
 
     with sub3:
-        st.subheader("RQ2: Univariate BH-FDR Tests & TreeSHAP")
         c1, c2 = st.columns(2)
         with c1:
-            show_fig("rq2_shap_summary.png", "Top 15 Predictors by Mean |SHAP| on held-out folds (Level 1, Random Forest M2)")
+            show_fig("missing_information_natural.png", "Records as they are, and one section hidden at a time")
         with c2:
-            show_fig("rq2_rf_importance_by_sex.png", "Sex-Stratified Out-of-Fold Random Forest Permutation Importance")
-        st.subheader("Age-Band Stratified Performance")
-        st.dataframe(load_table("rq2_age_bands.csv"), hide_index=True, width="stretch")
-        st.subheader("Age- and Sex-Adjusted Associations (multinomial LR test, BH-FDR)")
-        st.dataframe(load_table("rq2_adjusted_level1.csv"), hide_index=True, width="stretch")
-        st.subheader("Top Level-1 Univariate Associations (BH-FDR)")
-        df_u1 = load_table("rq2_univariate_level1.csv")
-        if df_u1 is not None:
-            st.dataframe(df_u1.head(20), hide_index=True, width="stretch")
+            show_fig("missing_information_withheld.png", "Same people, less information")
+        st.subheader("Missing fields, training share, ground truth, test share and test accuracy")
+        st.dataframe(load_table("paper_table3_missing_information.csv"), hide_index=True, width="stretch")
+        st.subheader("Sections hidden at test time")
+        st.dataframe(load_table("paper_table3b_hidden_sections.csv"), hide_index=True, width="stretch")
+        show_fig("missing_question_order.png", "Which question to ask next: accuracy as sections are added one at a time")
+        st.dataframe(load_table("questions_first_choice.csv"), hide_index=True, width="stretch")
+        st.subheader("Most common exact patterns of blank sections")
+        st.dataframe(load_table("missing_natural_patterns.csv"), hide_index=True, width="stretch")
 
     with sub4:
-        st.subheader("RQ3: Biological Signal vs. Recording Artifact")
         c1, c2 = st.columns(2)
         with c1:
-            show_fig("rq3_encoding_regimes.png", "Blanks Only vs. Recorded Values Only vs. Full Features")
+            show_fig("reliability_calibration.png", "Calibration of the predicted probabilities")
         with c2:
-            show_fig("rq3_subgroups.png", "Complete Cases, NOK Interview Subgroups, and Cardiac-Conflict Sensitivity")
-        st.subheader("Share of the Gain: Recording Flags vs Recorded Values")
-        st.dataframe(load_table("rq3_gain_shares.csv"), hide_index=True, width="stretch")
-        st.dataframe(load_table("rq3_artifact.csv"), hide_index=True, width="stretch")
+            show_fig("reliability_shortlists.png", "Answering only when confident, and 90% shortlists")
+        st.dataframe(load_table("reliability_selective.csv"), hide_index=True, width="stretch")
+        st.dataframe(load_table("reliability_conformal.csv"), hide_index=True, width="stretch")
 
     with sub5:
-        st.subheader("Level 3 Negative Control, Permutation Check & Robustness")
-        show_fig("level3_and_robustness.png", "Level 3 Homicide Weapon Negative Control & Level 1 Robustness")
         c1, c2 = st.columns(2)
         with c1:
-            st.write("**Level 3 Control (Gunshot vs. Stab; 30 gunshot deaths, low power)**")
-            st.dataframe(load_table("level3_negative_control.csv"), hide_index=True, width="stretch")
-            st.write("**Permuted-Label Control (5 Shuffles)**")
-            st.dataframe(load_table("permutation_check.csv"), hide_index=True, width="stretch")
+            show_fig("explanation_content_vs_blanks.png", "Which sections are filled in versus what they say")
         with c2:
-            st.write("**Robustness Checks (Level 1, HistGB)**")
-            st.dataframe(load_table("robustness.csv"), hide_index=True, width="stretch")
+            show_fig("explanation_shap.png", "Inputs that move the estimate most (held-out SHAP)")
+        st.dataframe(load_table("explanation_gain_shares.csv"), hide_index=True, width="stretch")
+        st.dataframe(load_table("explanation_regimes.csv"), hide_index=True, width="stretch")
+        st.subheader("Age- and sex-adjusted associations (broad cause)")
+        st.dataframe(load_table("factors_adjusted_level1.csv"), hide_index=True, width="stretch")
 
+    with sub6:
+        show_fig("controls.png", "Negative control, permutation test and robustness checks")
+        c1, c2 = st.columns(2)
+        with c1:
+            st.write("**Negative control: stab vs gunshot (small sample)**")
+            st.dataframe(load_table("controls_level3.csv"), hide_index=True, width="stretch")
+            st.write("**Permutation test**")
+            st.dataframe(load_table("controls_permutation.csv"), hide_index=True, width="stretch")
+        with c2:
+            st.write("**Robustness (broad cause, gradient boosting)**")
+            st.dataframe(load_table("controls_robustness.csv"), hide_index=True, width="stretch")
+            st.write("**Leakage demonstration (why the cart variable is blocked)**")
+            st.dataframe(load_table("controls_leakage_demo.csv"), hide_index=True, width="stretch")
