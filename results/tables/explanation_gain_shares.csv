@@ -1,0 +1,7 @@
+level,model,block,auc_gain_full,auc_gain_blank_pattern_only,auc_gain_content_only,auc_share_blank_pattern_pct,auc_share_content_pct,accuracy_gain_full,accuracy_gain_blank_pattern_only,accuracy_gain_content_only,accuracy_share_blank_pattern_pct,accuracy_share_content_pct
+Level1,HistGB,lifestyle,0.066,0.04,0.023,61,35,0.046,0.032,-0.008,70,-17
+Level1,HistGB,lifestyle + medical history,0.088,0.051,0.032,58,36,0.072,0.033,0.001,46,1
+Level1,LogReg,lifestyle,0.049,0.033,0.004,67,8,0.069,0.028,0.012,41,17
+Level1,LogReg,lifestyle + medical history,0.061,0.044,0.011,72,18,0.086,0.049,0.015,57,17
+Level2,HistGB,lifestyle,0.048,0.021,0.008,44,17,0.049,0.008,0.008,16,16
+Level2,HistGB,lifestyle + medical history,0.069,0.04,0.013,58,19,0.072,0.021,0.029,29,40
