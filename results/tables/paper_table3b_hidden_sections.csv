@@ -1,0 +1,61 @@
+hidden at test time,handling,accuracy (95% CI),change vs full record,macro AUC (95% CI),same answer as full record (%),"accuracy, true natural cardiac","accuracy, true drug / alcohol","accuracy, true injury"
+nothing hidden,"standard model, hidden = left blank",58.6% (55.8 to 61.2),+0.0 points (+0.0 to +0.0),0.776 (0.756 to 0.794),100.0,60.1%,57.6%,58.4%
+nothing hidden,"standard model, hidden = typical values",58.6% (55.8 to 61.2),+0.0 points (+0.0 to +0.0),0.776 (0.756 to 0.794),100.0,60.1%,57.6%,58.4%
+nothing hidden,"standard model, hidden = multiple imputation",58.6% (55.8 to 61.2),+0.0 points (+0.0 to +0.0),0.776 (0.756 to 0.794),100.0,60.1%,57.6%,58.4%
+nothing hidden,withholding-trained model,58.2% (55.5 to 60.7),+0.0 points (+0.0 to +0.0),0.770 (0.752 to 0.788),100.0,57.9%,56.8%,59.8%
+nothing hidden,dedicated reduced model (reference),58.6% (55.8 to 61.2),+0.0 points (+0.0 to +0.0),0.776 (0.756 to 0.794),100.0,60.1%,57.6%,58.4%
+Drinking,"standard model, hidden = left blank",54.0% (51.2 to 56.5),-4.6 points (-6.2 to -3.0),0.748 (0.729 to 0.767),89.3,64.6%,44.0%,56.0%
+Drinking,"standard model, hidden = typical values",55.9% (53.3 to 58.5),-2.6 points (-4.6 to -0.7),0.746 (0.726 to 0.764),83.2,57.4%,46.4%,64.3%
+Drinking,"standard model, hidden = multiple imputation",55.3% (52.5 to 57.8),-3.3 points (-5.0 to -1.5),0.748 (0.728 to 0.767),86.0,59.0%,52.8%,55.0%
+Drinking,withholding-trained model,54.8% (52.2 to 57.2),-3.4 points (-5.1 to -1.7),0.744 (0.724 to 0.762),85.6,58.4%,49.4%,57.4%
+Drinking,dedicated reduced model (reference),53.5% (50.7 to 56.2),-5.1 points (-7.1 to -3.0),0.744 (0.724 to 0.764),81.2,59.8%,50.2%,52.1%
+Tobacco,"standard model, hidden = left blank",58.5% (55.9 to 61.1),-0.1 points (-0.8 to +0.7),0.773 (0.753 to 0.792),96.5,57.9%,58.4%,59.0%
+Tobacco,"standard model, hidden = typical values",55.4% (52.8 to 58.0),-3.2 points (-5.3 to -0.8),0.763 (0.745 to 0.782),80.7,73.2%,64.6%,33.1%
+Tobacco,"standard model, hidden = multiple imputation",58.3% (55.5 to 60.8),-0.3 points (-1.1 to +0.5),0.774 (0.754 to 0.793),96.7,58.7%,58.8%,57.4%
+Tobacco,withholding-trained model,58.0% (55.4 to 60.5),-0.2 points (-1.2 to +0.8),0.769 (0.751 to 0.788),92.9,57.6%,55.4%,60.7%
+Tobacco,dedicated reduced model (reference),58.7% (56.1 to 61.3),+0.1 points (-1.0 to +1.3),0.773 (0.753 to 0.791),89.7,59.8%,58.2%,58.4%
+Drug use,"standard model, hidden = left blank",56.6% (54.1 to 59.3),-2.0 points (-3.2 to -0.8),0.756 (0.737 to 0.775),93.8,60.3%,49.0%,61.3%
+Drug use,"standard model, hidden = typical values",52.8% (50.3 to 55.3),-5.8 points (-8.0 to -3.7),0.749 (0.731 to 0.767),79.6,64.9%,62.6%,34.1%
+Drug use,"standard model, hidden = multiple imputation",56.5% (53.8 to 59.1),-2.0 points (-3.3 to -0.7),0.753 (0.734 to 0.771),91.6,59.0%,53.2%,58.0%
+Drug use,withholding-trained model,56.0% (53.5 to 58.6),-2.2 points (-3.6 to -0.7),0.754 (0.735 to 0.771),90.0,59.2%,52.2%,57.4%
+Drug use,dedicated reduced model (reference),56.4% (53.7 to 59.1),-2.1 points (-3.8 to -0.6),0.758 (0.739 to 0.776),85.3,60.1%,54.6%,55.6%
+Marital status,"standard model, hidden = left blank",58.3% (55.7 to 60.9),-0.2 points (-0.9 to +0.4),0.776 (0.757 to 0.795),97.6,60.6%,58.6%,56.4%
+Marital status,"standard model, hidden = typical values",58.1% (55.4 to 60.9),-0.4 points (-1.8 to +1.0),0.776 (0.757 to 0.794),92.3,56.8%,52.4%,64.7%
+Marital status,"standard model, hidden = multiple imputation",59.1% (56.5 to 61.7),+0.6 points (-0.2 to +1.4),0.778 (0.758 to 0.796),96.8,61.1%,57.8%,59.0%
+Marital status,withholding-trained model,58.3% (55.7 to 60.7),+0.1 points (-0.9 to +1.2),0.770 (0.751 to 0.788),94.6,57.9%,57.2%,59.8%
+Marital status,dedicated reduced model (reference),58.6% (55.8 to 61.2),+0.1 points (-0.9 to +1.0),0.776 (0.757 to 0.794),90.7,60.1%,57.0%,59.2%
+Body size (BMI),"standard model, hidden = left blank",56.9% (54.2 to 59.6),-1.7 points (-4.0 to +0.7),0.759 (0.739 to 0.778),73.3,63.0%,42.0%,67.1%
+Body size (BMI),"standard model, hidden = typical values",57.0% (54.3 to 59.6),-1.6 points (-4.1 to +1.1),0.774 (0.755 to 0.793),72.1,39.7%,47.2%,79.3%
+Body size (BMI),"standard model, hidden = multiple imputation",59.3% (56.7 to 61.8),+0.7 points (-1.5 to +2.8),0.777 (0.757 to 0.794),77.1,60.1%,56.0%,61.9%
+Body size (BMI),withholding-trained model,59.3% (56.7 to 61.9),+1.2 points (-0.7 to +3.0),0.774 (0.756 to 0.792),80.7,56.0%,56.4%,64.7%
+Body size (BMI),dedicated reduced model (reference),58.6% (55.8 to 61.1),+0.0 points (-2.1 to +2.0),0.771 (0.752 to 0.791),76.7,59.5%,55.2%,61.1%
+"Education, work, diet","standard model, hidden = left blank",58.4% (55.7 to 60.9),-0.1 points (-0.9 to +0.5),0.775 (0.755 to 0.794),97.8,59.8%,59.2%,56.6%
+"Education, work, diet","standard model, hidden = typical values",59.5% (57.0 to 62.1),+0.9 points (-0.9 to +2.7),0.777 (0.757 to 0.796),85.6,58.7%,48.8%,70.6%
+"Education, work, diet","standard model, hidden = multiple imputation",58.2% (55.3 to 60.8),-0.4 points (-0.9 to +0.1),0.776 (0.756 to 0.794),98.2,60.1%,57.6%,57.4%
+"Education, work, diet",withholding-trained model,58.6% (55.9 to 61.0),+0.4 points (-0.6 to +1.3),0.770 (0.751 to 0.787),94.6,57.9%,56.8%,60.7%
+"Education, work, diet",dedicated reduced model (reference),58.3% (55.5 to 60.9),-0.2 points (-1.3 to +0.8),0.775 (0.755 to 0.794),90.9,59.5%,57.0%,58.8%
+Diagnoses,"standard model, hidden = left blank",55.1% (52.3 to 57.7),-3.5 points (-5.1 to -2.0),0.752 (0.731 to 0.771),89.5,45.3%,56.6%,60.7%
+Diagnoses,"standard model, hidden = typical values",55.0% (52.3 to 57.6),-3.6 points (-5.7 to -1.5),0.746 (0.726 to 0.764),82.4,63.0%,57.4%,46.7%
+Diagnoses,"standard model, hidden = multiple imputation",55.7% (52.9 to 58.3),-2.9 points (-4.6 to -1.4),0.756 (0.736 to 0.775),88.8,56.3%,56.0%,54.8%
+Diagnoses,withholding-trained model,55.6% (52.9 to 58.0),-2.6 points (-4.3 to -0.8),0.746 (0.726 to 0.764),86.0,53.4%,59.6%,53.3%
+Diagnoses,dedicated reduced model (reference),56.4% (53.7 to 59.1),-2.2 points (-4.0 to -0.4),0.754 (0.734 to 0.773),83.0,57.9%,55.0%,56.6%
+Past injuries and surgery,"standard model, hidden = left blank",58.3% (55.6 to 60.8),-0.2 points (-0.7 to +0.2),0.776 (0.757 to 0.795),98.4,59.0%,58.2%,58.0%
+Past injuries and surgery,"standard model, hidden = typical values",58.4% (55.7 to 61.2),-0.1 points (-1.5 to +1.2),0.778 (0.760 to 0.796),90.4,67.3%,53.4%,56.8%
+Past injuries and surgery,"standard model, hidden = multiple imputation",58.0% (55.2 to 60.6),-0.5 points (-1.0 to +0.0),0.777 (0.758 to 0.795),98.4,59.0%,57.6%,57.8%
+Past injuries and surgery,withholding-trained model,58.3% (55.5 to 60.6),+0.1 points (-0.9 to +1.0),0.771 (0.752 to 0.788),95.1,56.3%,57.2%,60.7%
+Past injuries and surgery,dedicated reduced model (reference),58.2% (55.5 to 60.7),-0.4 points (-1.2 to +0.5),0.776 (0.756 to 0.795),91.9,59.2%,57.4%,58.2%
+All lifestyle sections,"standard model, hidden = left blank",49.6% (47.0 to 52.2),-8.9 points (-12.0 to -5.5),0.701 (0.682 to 0.720),56.3,74.0%,8.8%,72.0%
+All lifestyle sections,"standard model, hidden = typical values",50.7% (48.1 to 53.3),-7.8 points (-10.6 to -4.7),0.721 (0.703 to 0.740),57.9,56.8%,23.0%,73.6%
+All lifestyle sections,"standard model, hidden = multiple imputation",51.0% (48.4 to 53.6),-7.5 points (-10.4 to -4.6),0.719 (0.701 to 0.739),62.1,57.9%,48.4%,48.5%
+All lifestyle sections,withholding-trained model,52.7% (50.1 to 55.2),-5.5 points (-8.3 to -2.7),0.729 (0.710 to 0.747),66.0,61.1%,49.2%,49.9%
+All lifestyle sections,dedicated reduced model (reference),50.5% (47.6 to 53.1),-8.0 points (-10.8 to -5.4),0.717 (0.698 to 0.736),64.7,55.0%,46.2%,51.5%
+All medical sections,"standard model, hidden = left blank",54.7% (52.0 to 57.4),-3.8 points (-5.5 to -2.4),0.751 (0.732 to 0.771),88.4,42.4%,57.6%,60.9%
+All medical sections,"standard model, hidden = typical values",56.6% (54.0 to 59.3),-2.0 points (-4.3 to +0.1),0.750 (0.731 to 0.768),79.2,71.6%,53.8%,48.3%
+All medical sections,"standard model, hidden = multiple imputation",54.6% (51.9 to 57.2),-4.0 points (-5.7 to -2.4),0.752 (0.732 to 0.771),86.7,54.2%,56.4%,53.1%
+All medical sections,withholding-trained model,55.6% (52.9 to 58.0),-2.6 points (-4.4 to -0.7),0.746 (0.726 to 0.764),84.1,53.6%,59.8%,52.9%
+All medical sections,dedicated reduced model (reference),55.9% (53.3 to 58.6),-2.7 points (-4.5 to -0.9),0.754 (0.735 to 0.774),82.6,56.8%,56.0%,55.0%
+Everything except age and sex,"standard model, hidden = left blank",42.9% (40.2 to 45.5),-15.7 points (-19.0 to -12.5),0.663 (0.641 to 0.683),47.1,52.0%,0.0%,78.5%
+Everything except age and sex,"standard model, hidden = typical values",47.8% (45.2 to 50.4),-10.8 points (-14.1 to -7.5),0.698 (0.678 to 0.717),53.0,67.6%,18.0%,62.5%
+Everything except age and sex,"standard model, hidden = multiple imputation",49.4% (47.0 to 52.1),-9.1 points (-12.3 to -6.0),0.687 (0.667 to 0.706),54.8,58.7%,52.8%,39.3%
+Everything except age and sex,withholding-trained model,52.8% (50.0 to 55.3),-5.4 points (-8.5 to -2.4),0.696 (0.676 to 0.714),61.2,51.7%,63.6%,42.8%
+Everything except age and sex,dedicated reduced model (reference),51.3% (48.8 to 53.8),-7.2 points (-10.2 to -4.1),0.688 (0.667 to 0.708),58.3,56.3%,57.4%,41.6%

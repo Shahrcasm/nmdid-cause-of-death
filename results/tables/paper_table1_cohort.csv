@@ -1,4 +1,15 @@
-level1_class,n,age_median,age_q25,age_q75,age_median_iqr,male_n,male_pct
-natural_cardiac,373,59.0,51.0,68.0,59 (51-68),259,69.4
-drug_alcohol,500,43.0,34.0,52.0,43 (34-52),324,64.8
-injury,507,42.0,29.0,56.0,42 (29-56),392,77.3
+characteristic,natural_cardiac,drug_alcohol,injury,all
+"People, n",373,500,507,1380
+"Age, median (IQR)",59 (51-68),43 (34-52),42 (29-56),
+"Male, %",69.4,64.8,77.3,70.7
+"Recorded: drinking, %",37.0,52.6,33.3,41.3
+"Recorded: tobacco, %",34.9,28.6,17.8,26.3
+"Recorded: drug_use, %",16.6,35.4,12.2,21.8
+"Recorded: diagnosis, %",59.8,43.2,26.2,41.4
+"Recorded: medications, %",50.1,45.4,12.6,34.6
+"Recorded: marital, %",32.2,26.6,27.6,28.5
+"Recorded: nok_interview, %",20.6,16.4,14.6,16.9
+"Recorded: cadaver_bmi_raw_measurements, %",90.9,93.0,90.3,91.4
+"Recorded: cadaver_bmi_main (implausible removed), %",90.3,92.8,89.7,91.0
+"Recorded: cadaver_bmi_decomp_blanked (sensitivity), %",74.8,88.4,84.8,83.4
+"Recorded: living_bmi, %",20.9,16.4,15.2,17.2

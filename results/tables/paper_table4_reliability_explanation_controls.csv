@@ -1,0 +1,26 @@
+area,measure,value
+Reliability,"Expected calibration error, standard model (range over classes)",0.034 to 0.041
+Reliability,"Calibration slope, standard model (range over classes)",0.78 to 0.89
+Reliability,Answer only when top probability >= 0.7: people answered / accuracy,32.7% / 72.1%
+Reliability,Shortlist targeting 90%: coverage reached / average length (of 3),90.0% / 1.99
+Reliability,Shortlist targeting 95%: coverage reached / average length (of 3),95.0% / 2.31
+Reliability,Shortlist targeting 99%: coverage reached / average length (of 3),99.2% / 2.69
+Reliability,90% shortlist coverage across bands of blank sections: one threshold / threshold adjusted for blank sections,86.4% to 92.4% / 90.0% to 91.1%
+Reliability,"Calibration slope of the withholding-trained model, before / after recalibration (range over classes)",0.58 to 0.68 / 1.22 to 1.41
+Validation,"Later years (trained to 2014, tested 2015 on): accuracy / macro AUC, all inputs",58.0% / 0.770
+Validation,"Held-out county groups: accuracy / macro AUC, all inputs",57.2% / 0.756
+Validation,Later years: 90% shortlist coverage / average length,93.5% / 2.35
+Missing information,"Every section hidden: multiple imputation / withholding-trained model, accuracy",49.4% / 52.8%
+Missing information,Accuracy after 2 questions from age and sex: model-chosen / fixed order / random order,52.0% / 50.4% / 51.4%
+Explanation,Share of the lifestyle AUC gain from the blank pattern alone (gradient boosting),61%
+Explanation,"Share of the lifestyle AUC gain from the content alone, lower bound (gradient boosting)",35%
+Explanation,Complete cases (n = 243): AUC gain of all inputs over age + sex,+0.010 (-0.039 to +0.062)
+Explanation,Factors associated with the broad cause after age and sex adjustment (FDR 5%),30 of 77
+Control,"Negative control, logistic regression: AUC gain of all inputs (stab vs gunshot)",-0.028 (-0.128 to +0.067)
+Control,"Permutation test, Level 1: shuffled-label AUC mean (95% range) vs real",0.498 (0.470 to 0.520) vs 0.767
+Control,"Leakage demonstration: blocked cart variable alone, accuracy",98.2%
+Robustness,"All inputs, cadaver BMI blanked for decomposition: macro AUC / accuracy",0.778 / 59.7%
+Robustness,"All inputs, living BMI only: macro AUC / accuracy",0.772 / 59.1%
+Robustness,"All inputs, class weights: macro AUC / accuracy",0.774 / 58.0%
+Robustness,"All inputs, deaths after 2017 excluded: macro AUC / accuracy",0.774 / 58.6%
+Robustness,"All inputs, cardiac-conflict ingestion deaths relabelled: macro AUC / accuracy",0.776 / 57.9%

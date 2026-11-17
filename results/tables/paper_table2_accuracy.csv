@@ -1,0 +1,31 @@
+outcome,model,inputs,n,accuracy (95% CI),macro AUC (95% CI),balanced accuracy,Brier score,top-2 accuracy,largest-group accuracy
+Broad cause (3 classes),HistGB,Age + sex,1380,51.3% (48.8 to 53.8),0.688 (0.667 to 0.708),0.518,0.595,0.841,0.367
+Broad cause (3 classes),HistGB,+ lifestyle,1380,55.9% (53.3 to 58.6),0.754 (0.735 to 0.774),0.56,0.55,0.868,0.367
+Broad cause (3 classes),HistGB,+ medical history,1380,58.6% (55.8 to 61.2),0.776 (0.756 to 0.794),0.587,0.528,0.877,0.367
+Broad cause (3 classes),RF,Age + sex,1380,47.9% (45.4 to 50.4),0.668 (0.648 to 0.688),0.486,0.634,0.819,0.367
+Broad cause (3 classes),RF,+ lifestyle,1380,53.3% (50.7 to 55.9),0.723 (0.703 to 0.743),0.538,0.59,0.864,0.367
+Broad cause (3 classes),RF,+ medical history,1380,56.7% (54.1 to 59.3),0.749 (0.729 to 0.768),0.573,0.56,0.883,0.367
+Broad cause (3 classes),LogReg,Age + sex,1380,48.0% (45.3 to 50.6),0.684 (0.665 to 0.703),0.497,0.605,0.836,0.367
+Broad cause (3 classes),LogReg,+ lifestyle,1380,54.9% (52.2 to 57.5),0.733 (0.714 to 0.752),0.554,0.578,0.867,0.367
+Broad cause (3 classes),LogReg,+ medical history,1380,56.5% (53.8 to 58.9),0.745 (0.726 to 0.763),0.57,0.57,0.876,0.367
+Broad cause (3 classes),Ensemble,Age + sex,1380,49.4% (46.8 to 52.2),0.686 (0.667 to 0.705),0.505,0.593,0.844,0.367
+Broad cause (3 classes),Ensemble,+ lifestyle,1380,55.7% (52.9 to 58.4),0.753 (0.733 to 0.771),0.564,0.55,0.876,0.367
+Broad cause (3 classes),Ensemble,+ medical history,1380,57.5% (54.9 to 60.1),0.776 (0.758 to 0.793),0.58,0.527,0.886,0.367
+Intent within injury deaths (3 classes),HistGB,Age + sex,487,38.8% (34.1 to 43.3),0.524 (0.489 to 0.559),0.325,0.662,0.784,0.441
+Intent within injury deaths (3 classes),HistGB,+ lifestyle,487,43.7% (39.2 to 47.8),0.573 (0.533 to 0.612),0.393,0.654,0.768,0.441
+Intent within injury deaths (3 classes),HistGB,+ medical history,487,46.0% (41.5 to 50.3),0.594 (0.552 to 0.635),0.424,0.644,0.784,0.441
+Intent within injury deaths (3 classes),RF,Age + sex,487,30.2% (26.5 to 34.1),0.479 (0.442 to 0.517),0.309,0.816,0.682,0.441
+Intent within injury deaths (3 classes),RF,+ lifestyle,487,43.5% (38.8 to 48.1),0.574 (0.533 to 0.613),0.433,0.699,0.743,0.441
+Intent within injury deaths (3 classes),RF,+ medical history,487,45.0% (40.5 to 49.7),0.611 (0.571 to 0.650),0.454,0.667,0.758,0.441
+Intent within injury deaths (3 classes),LogReg,Age + sex,487,33.5% (29.4 to 37.8),0.531 (0.495 to 0.567),0.37,0.664,0.721,0.441
+Intent within injury deaths (3 classes),LogReg,+ lifestyle,487,43.5% (39.0 to 48.0),0.583 (0.541 to 0.622),0.431,0.708,0.764,0.441
+Intent within injury deaths (3 classes),LogReg,+ medical history,487,45.2% (40.9 to 49.3),0.593 (0.553 to 0.629),0.446,0.717,0.78,0.441
+Intent within injury deaths (3 classes),Ensemble,Age + sex,487,33.7% (29.6 to 37.8),0.504 (0.468 to 0.540),0.322,0.685,0.731,0.441
+Intent within injury deaths (3 classes),Ensemble,+ lifestyle,487,44.8% (40.2 to 48.9),0.589 (0.547 to 0.629),0.425,0.656,0.776,0.441
+Intent within injury deaths (3 classes),Ensemble,+ medical history,487,46.4% (41.9 to 50.5),0.616 (0.575 to 0.653),0.442,0.642,0.789,0.441
+Broad cause: accuracy ceiling,"HistGB, fixed settings",M2 main inputs,1380,58.6% (55.8 to 61.2),0.776 (0.756 to 0.794),0.587,0.528,0.877,
+Broad cause: accuracy ceiling,"HistGB, fixed settings",M2 + medications,1380,60.3% (57.8 to 62.8),0.786 (0.767 to 0.804),0.602,0.518,0.896,
+Broad cause: accuracy ceiling,"HistGB, fixed settings",M2 + medications + race and ethnicity,1380,60.6% (58.1 to 63.1),0.788 (0.769 to 0.807),0.605,0.516,0.9,
+Broad cause: accuracy ceiling,"HistGB, nested search",M2 main inputs,1380,59.9% (57.2 to 62.4),0.782 (0.764 to 0.799),0.601,0.517,0.891,
+Broad cause: accuracy ceiling,"HistGB, nested search",M2 + medications + race and ethnicity,1380,62.0% (59.4 to 64.5),0.801 (0.784 to 0.818),0.617,0.497,0.91,
+Broad cause: accuracy ceiling,ensemble of three models,M2 main inputs,1380,57.5% (54.9 to 60.1),0.776 (0.758 to 0.793),0.58,0.527,0.886,
